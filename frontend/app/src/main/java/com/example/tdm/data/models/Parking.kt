@@ -1,6 +1,9 @@
 package com.example.tdm.data.models
 
+import androidx.room.Entity
 
+
+@Entity(tableName = "parking")
 data class Parking(
     val idParking: String,
     val name: String,
