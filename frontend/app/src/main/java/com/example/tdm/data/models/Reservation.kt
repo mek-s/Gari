@@ -2,8 +2,10 @@
 
 
 
+import androidx.room.Entity
 import java.util.Date
 
+@Entity(tableName = "reservation")
 data class Reservation(
     val idReservation: String,
     val idPlace: String, // Assuming FK stands for Foreign Key
