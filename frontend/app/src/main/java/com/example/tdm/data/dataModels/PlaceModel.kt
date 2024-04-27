@@ -1,10 +1,10 @@
 package com.example.tdm.data.dataModels
 
-import Place
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.example.tdm.data.models.Place
 import com.example.tdm.data.repositories.PlaceRespository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
