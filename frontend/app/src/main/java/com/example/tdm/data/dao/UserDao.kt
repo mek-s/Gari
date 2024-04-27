@@ -6,6 +6,6 @@ import com.example.tdm.data.models.Parking
 @Dao
 interface UserDao {
     @Query("SELECT * FROM user")
-    suspend fun getAllusers(): List<User>
+    fun getAllUsers(): List<User>
 
 }

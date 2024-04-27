@@ -4,6 +4,6 @@ import androidx.room.Query
 @Dao
 interface PlaceDao {
     @Query("SELECT * FROM place")
-    suspend fun getAllPlaces(): List<Place>
+     fun getAllPlaces(): List<Place>
 
 }
