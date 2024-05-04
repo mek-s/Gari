@@ -1,11 +1,13 @@
+package com.example.tdm.data.dao
+
 import androidx.room.Dao
 import androidx.room.Query
-import com.example.tdm.data.models.Parking
+import com.example.tdm.data.models.Reservation
 
 
 @Dao
 interface ReservationDao {
     @Query("SELECT * FROM reservation")
-    suspend fun getAllResv(): List<Reservation>
+     fun getAllReservations(): List<Reservation>
 
 }
