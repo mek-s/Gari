@@ -14,9 +14,6 @@ import com.example.tdm.ui.theme.TDMTheme
 
 class MainActivity : androidx.activity.ComponentActivity() {
 
-    private val reservationModel: ReservationModel by viewModels {
-        ReservationModel.Factory((application as TDMApplication).reservationRespository)
-    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

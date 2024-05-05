@@ -3,10 +3,7 @@ package com.example.TDM.controllers;
 import com.example.TDM.models.Parking;
 import com.example.TDM.services.ParkingService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -22,6 +19,8 @@ public class ParkingController {
 
     @GetMapping("/all")
     public List<Parking> getAllParkings() {
-        return parkingService.getAllParkings();
+        List<Parking> parkings = parkingService.getAllParkings();
+        return parkings;
     }
+
 }

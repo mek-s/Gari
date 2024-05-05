@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
-import com.example.tdm.data.viewModels.Parking
+import com.example.tdm.data.models.Parking
 
 
 @Composable
@@ -45,15 +46,15 @@ fun ParkingsList(parkings: List<Parking>, navController: NavHostController) {
 
             ) {
 
-                AsyncImage(
-                    model = URL + it.image,
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .weight(1f)
-                        .aspectRatio(1f)
-                        .padding(8.dp)
-                )
+//                AsyncImage(
+//                    model = URL + it.image,
+//                    contentDescription = null,
+//                    contentScale = ContentScale.Crop,
+//                    modifier = Modifier
+//                        .weight(1f)
+//                        .aspectRatio(1f)
+//                        .padding(8.dp)
+//                )
 
                 Column(
                     modifier = Modifier.weight(2f)
