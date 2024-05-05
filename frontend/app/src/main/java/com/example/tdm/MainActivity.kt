@@ -25,6 +25,7 @@ class MainActivity : androidx.activity.ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+                    parkingModel.getAllParkings()
                     NavigationMenu(navController = rememberNavController() , parkingModel )
                 }
             }

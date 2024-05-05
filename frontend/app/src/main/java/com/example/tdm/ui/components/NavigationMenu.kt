@@ -75,7 +75,6 @@ fun NavigationMenu(
     ) {
         NavHost(navController = navController, startDestination = Routes.Home.route) {
             composable(Routes.Home.route) {
-                parkingModel.getAllParkings()
                 ParkingsList(parkings = parkingModel.allRParkings.value, navController = navController)
             }
             composable(Routes.Map.route) { }
