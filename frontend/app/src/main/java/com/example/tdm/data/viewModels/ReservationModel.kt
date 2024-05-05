@@ -16,11 +16,24 @@ import kotlinx.coroutines.withContext
 class ReservationModel(private val reservationRespository: ReservationRespository) : ViewModel() {
 
     var allReservations = mutableStateOf(listOf<Reservation>())
+    var loading = mutableStateOf(false)
+    var displayMsg = mutableStateOf(false)
+
 
     fun getAllReservations() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                allReservations.value = reservationRespository.getAllReservations()
+                val response = reservationRespository.getAllReservations()
+                loading.value = false
+
+                if (response.isSuccessful) {
+                    val reservations = response.body()
+                    if (reservations != null) {
+                        allReservations.value = reservations
+                    }
+                } else {
+                    displayMsg.value = true
+                }
             }
         }
 

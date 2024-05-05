@@ -4,6 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.example.tdm.Endpoint
 import com.example.tdm.data.models.Parking
 
 import com.example.tdm.data.repositories.ParkingRepository
@@ -54,7 +55,7 @@ class ParkingModel(private val parkingRepository: ParkingRepository) : ViewModel
     }
 
 
-    class Factory(private val parkingRepository: ParkingRepository ) :
+    class Factory(private val parkingRepository: ParkingRepository) :
         ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return ParkingModel(parkingRepository) as T

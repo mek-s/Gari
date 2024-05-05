@@ -12,11 +12,24 @@ import kotlinx.coroutines.withContext
 
 class PlaceModel(private val placeRespository: PlaceRespository) : ViewModel() {
     var allPlaces = mutableStateOf(listOf<Place>())
+    var loading = mutableStateOf(false)
+    var displayMsg = mutableStateOf(false)
+
 
     fun getAllPlaces() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                allPlaces.value = placeRespository.getAllPlaces()
+                val response = placeRespository.getAllPlaces()
+                loading.value = false
+
+                if (response.isSuccessful) {
+                    val places = response.body()
+                    if (places != null) {
+                        allPlaces.value = places
+                    }
+                } else {
+                    displayMsg.value = true
+                }
             }
         }
 
@@ -28,4 +41,9 @@ class PlaceModel(private val placeRespository: PlaceRespository) : ViewModel() {
             return PlaceModel(placeRespository) as T
         }
     }
+
+
+
+
+
 }

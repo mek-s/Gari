@@ -14,9 +14,9 @@ class TDMApplication : Application() {
     private val userDao by lazy { dataBase.getUserDao() }
     private val placeDao by lazy { dataBase.getPlaceDao() }
 
-    val reservationRespository by lazy { Endpoint.createEndpoint() }
-    val parkingRepository by lazy {Endpoint.createEndpoint()}
-    val placeRepository by lazy { Endpoint.createEndpoint() }
+    val reservationRespository by lazy { ReservationRespository(Endpoint.createEndpoint()) }
+    val parkingRepository by lazy {ParkingRepository(Endpoint.createEndpoint())}
+    val placeRepository by lazy { PlaceRespository(Endpoint.createEndpoint()) }
 //    val userRespository by lazy { UserRespository(userDao) }
 
 }
