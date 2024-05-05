@@ -6,8 +6,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
-import com.example.tdm.data.dataModels.ReservationModel
-import java.util.Date
+import com.example.tdm.data.models.ReservationModel
 
 @Composable
 fun GetMain(reservationModel: ReservationModel) {

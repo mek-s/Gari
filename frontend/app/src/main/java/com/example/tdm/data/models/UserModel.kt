@@ -1,12 +1,10 @@
-package com.example.tdm.data.dataModels
+package com.example.tdm.data.models
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.tdm.data.models.Reservation
-import com.example.tdm.data.models.User
-import com.example.tdm.data.repositories.ReservationRespository
+import com.example.tdm.data.dataModels.User
 import com.example.tdm.data.repositories.UserRespository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

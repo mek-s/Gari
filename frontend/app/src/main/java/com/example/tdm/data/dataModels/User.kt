@@ -1,4 +1,4 @@
-package com.example.tdm.data.models
+package com.example.tdm.data.dataModels
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
