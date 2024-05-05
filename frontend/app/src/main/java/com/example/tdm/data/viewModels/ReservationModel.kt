@@ -1,4 +1,4 @@
-package com.example.tdm.data.models
+package com.example.tdm.data.viewModels
 
 
 import com.example.tdm.data.repositories.ReservationRespository
@@ -7,7 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.tdm.data.dataModels.Reservation
+import com.example.tdm.data.models.Reservation
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

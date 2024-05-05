@@ -68,6 +68,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
     implementation ("androidx.navigation:navigation-compose:2.6.0")
+    //roommvvm
     val room_version = "2.5.0"
     implementation ("androidx.room:room-runtime:$room_version")
     ksp("androidx.room:room-compiler:$room_version")
@@ -78,4 +79,17 @@ dependencies {
     implementation ("com.google.code.gson:gson:2.8.5")
     implementation("io.coil-kt:coil-compose:2.4.0")
     testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.2")
+    implementation ("com.google.maps.android:maps-compose:2.11.4")
+    implementation ("com.google.android.gms:play-services-maps:18.1.0")
+    //Retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.6.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.6.0")
+    implementation ("com.google.code.gson:gson:2.8.5")
+    // Coil
+    implementation("io.coil-kt:coil-compose:2.4.0")
+    //Coroutine tests
+    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.2")
+    //MockWebserver
+    testImplementation ("com.squareup.okhttp3:mockwebserver:4.9.1")
+
 }

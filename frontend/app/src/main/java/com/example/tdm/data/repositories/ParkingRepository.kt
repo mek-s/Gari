@@ -1,8 +1,7 @@
 package com.example.tdm.data.repositories
 
 
-import com.example.tdm.data.dao.ParkingDao
-import com.example.tdm.data.dataModels.Parking
+import com.example.tdm.data.models.Parking
 import parkingEndpoint
 import retrofit2.Response
 

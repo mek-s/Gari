@@ -10,6 +10,7 @@ sealed class Routes (val route: String) {
 
     object Profile : Routes ("ProfileScreen")
 
+    object ParkingDetails  :Routes("ParkingDetails")
 
 
 }
