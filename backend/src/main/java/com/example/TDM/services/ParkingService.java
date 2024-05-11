@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ParkingService {
@@ -19,6 +20,6 @@ public class ParkingService {
     }
     public List<Parking> getAllParkings() {return parkingRepository.findAll();}
 
-
+    public Optional<Parking> getParkingById(Integer id){return parkingRepository.findById(id);}
 
 }

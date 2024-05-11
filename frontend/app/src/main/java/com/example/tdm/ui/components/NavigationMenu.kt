@@ -14,21 +14,22 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.tdm.data.models.Parking
+import com.example.tdm.data.repositories.ParkingRepository
 import com.example.tdm.data.viewModels.ParkingModel
-import com.example.tdm.ui.components.ParkingsList
+
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun NavigationMenu(
     navController: NavHostController,
-   parkingModel: ParkingModel
-) {
-    val currentindex = navController.currentBackStackEntryAsState().value?.destination?.route
+    parkingModel: ParkingModel
+    ) {
+    val currentindex =navController.currentBackStackEntryAsState().value?.destination?.route
 
     Scaffold(
         bottomBar = {
@@ -74,12 +75,16 @@ fun NavigationMenu(
         },
     ) {
         NavHost(navController = navController, startDestination = Routes.Home.route) {
-            composable(Routes.Home.route) {
-                ParkingsList(parkings = parkingModel.allRParkings.value, navController = navController)
+            //val parkings = viewModel.allRParkings.value
+            composable(Routes.Home.route) {  DisplayHome(navController ,parkingModel) }
+            composable(Routes.Map.route) {  }
+            composable(Routes.MyResv.route) {  }
+            composable(Routes.Profile.route) {  }
+            composable(Routes.ParkingDetails.route) {
+              val parkingId = it.arguments?.getString("parkingId")?.toInt()
+              DisplayParkingDetails(parkingModel , parkingId)
             }
-            composable(Routes.Map.route) { }
-            composable(Routes.MyResv.route) { }
-            composable(Routes.Profile.route) { }
+
         }
     }
 }

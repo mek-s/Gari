@@ -1,8 +1,7 @@
 package com.example.tdm.data.repositories
 
 
-import com.example.tdm.Endpoint
-import com.example.tdm.data.dao.ReservationDao
+import com.example.tdm.endpoints.Endpoint
 import com.example.tdm.data.models.Reservation
 import retrofit2.Response
 

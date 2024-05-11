@@ -16,7 +16,6 @@ class MainActivity : androidx.activity.ComponentActivity() {
     private val parkingModel: ParkingModel by viewModels {
         ParkingModel.Factory((application as TDMApplication).parkingRepository)
     }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -25,8 +24,7 @@ class MainActivity : androidx.activity.ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    parkingModel.getAllParkings()
-                    NavigationMenu(navController = rememberNavController() , parkingModel )
+                    NavigationMenu(navController = rememberNavController()  , parkingModel)
                 }
             }
         }

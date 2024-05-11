@@ -1,5 +1,6 @@
-package com.example.tdm
+package com.example.tdm.endpoints
 
+import  com.example.tdm.URL
 import com.example.tdm.data.models.Parking
 import com.example.tdm.data.models.Place
 import com.example.tdm.data.models.Reservation
@@ -7,10 +8,14 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Path
 
 interface Endpoint {
     @GET("parkings/all")
     suspend fun getAllParkings(): Response<List<Parking>>
+
+    @GET("parkings/{id}")
+    suspend fun getParkingById(@Path("id") id: Int) : Response<Parking>
 
     @GET("places/all")
     suspend fun getAllPlaces(): Response<List<Place>>

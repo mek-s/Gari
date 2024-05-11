@@ -1,6 +1,8 @@
 package com.example.tdm.data.viewModels
 
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -11,6 +13,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class PlaceModel(private val placeRespository: PlaceRespository) : ViewModel() {
+
     var allPlaces = mutableStateOf(listOf<Place>())
     var loading = mutableStateOf(false)
     var displayMsg = mutableStateOf(false)
@@ -20,6 +23,7 @@ class PlaceModel(private val placeRespository: PlaceRespository) : ViewModel() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 val response = placeRespository.getAllPlaces()
+
                 loading.value = false
 
                 if (response.isSuccessful) {
@@ -29,10 +33,10 @@ class PlaceModel(private val placeRespository: PlaceRespository) : ViewModel() {
                     }
                 } else {
                     displayMsg.value = true
+
                 }
             }
         }
-
     }
 
     class Factory(private val placeRespository: PlaceRespository ) :
@@ -44,6 +48,5 @@ class PlaceModel(private val placeRespository: PlaceRespository) : ViewModel() {
 
 
 
-
-
 }
+

@@ -39,8 +39,6 @@ public class Parking {
     @Column(name = "longitude")
     private Double longitude;
 
-    @OneToMany(mappedBy="parking")
-    private Set<Place> places;
     @Column(name = "tarif")
     private  Double tarif;
     @Column(name = "image")

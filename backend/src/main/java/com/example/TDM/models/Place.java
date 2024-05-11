@@ -16,19 +16,15 @@ public class Place {
             strategy = GenerationType.SEQUENCE,
             generator = "place_sequence"
     )
+    @Column(name = "id_place")
     private Integer id_place ;
+    @Column(name = "reservee")
     private Boolean reservee;
 
-    @ManyToOne
-    @JoinColumn(name="id_parking", nullable=false)
-    private Parking parking;
 
     public Boolean isReservee() {
         return reservee;
     }
 
-    public Parking getParking() {
-        return parking;
-    }
 
 }

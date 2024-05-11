@@ -10,7 +10,10 @@ sealed class Routes (val route: String) {
 
     object Profile : Routes ("ProfileScreen")
 
-    object ParkingDetails  :Routes("ParkingDetails")
+
+    object ParkingDetails : Routes("ParkingDetails/{parkingId}") {
+        fun createRoute(parkingId: Int?) = "ParkingDetails/$parkingId"
+    }
 
 
 }

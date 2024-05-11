@@ -12,6 +12,6 @@ import java.util.List;
 @Repository
 public interface PlaceRepository extends JpaRepository<Place, Integer> {
 
-    @Query(value = "SELECT p FROM place p WHERE parking.id_parking =:id")
-    List<Place> findAllByParkingId(@Param("id") Integer id_parking);
+//    @Query(value = "SELECT p FROM place p WHERE parking.id_parking =:id")
+//    List<Place> findAllByParkingId(@Param("id") Integer id_parking);
 }

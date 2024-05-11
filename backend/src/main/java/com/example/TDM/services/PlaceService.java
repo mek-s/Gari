@@ -19,7 +19,7 @@ public class PlaceService  {
     }
     public List<Place> getAllPlaces() {return placeRepository.findAll();}
 
-    public List<Place> getAllPlacesForParking(Integer parkingId) {
-        return placeRepository.findAllByParkingId(parkingId);
-    }
+//    public List<Place> getAllPlacesForParking(Integer parkingId) {
+//        return placeRepository.findAllByParkingId(parkingId);
+//    }
 }
