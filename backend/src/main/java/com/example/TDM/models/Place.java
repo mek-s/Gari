@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "place")
 public class Place {
+
     @Id
     @SequenceGenerator(
             name = "place_sequence",
@@ -16,6 +17,18 @@ public class Place {
             generator = "place_sequence"
     )
     private Integer id_place ;
-    private  Integer id_parking;
     private Boolean reservee;
+
+    @ManyToOne
+    @JoinColumn(name="id_parking", nullable=false)
+    private Parking parking;
+
+    public Boolean isReservee() {
+        return reservee;
+    }
+
+    public Parking getParking() {
+        return parking;
+    }
+
 }

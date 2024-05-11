@@ -1,6 +1,7 @@
 package com.example.TDM.services;
 
 import com.example.TDM.models.Parking;
+import com.example.TDM.models.Place;
 import com.example.TDM.repositories.ParkingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,5 +18,7 @@ public class ParkingService {
         this.parkingRepository = parkingRepository;
     }
     public List<Parking> getAllParkings() {return parkingRepository.findAll();}
+
+
 
 }

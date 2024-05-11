@@ -18,4 +18,8 @@ public class PlaceService  {
         this.placeRepository = placeRepository;
     }
     public List<Place> getAllPlaces() {return placeRepository.findAll();}
+
+    public List<Place> getAllPlacesForParking(Integer parkingId) {
+        return placeRepository.findAllByParkingId(parkingId);
+    }
 }

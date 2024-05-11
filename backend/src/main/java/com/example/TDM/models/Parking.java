@@ -3,6 +3,8 @@ package com.example.TDM.models;
 import jakarta.persistence.*;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnCloudPlatform;
 
+import java.util.Set;
+
 
 @Entity
 @Table(name = "parking")
@@ -12,7 +14,7 @@ public class Parking {
             name = "parking_sequence",
             sequenceName = "parking_sequence",
             allocationSize = 1
-            )
+    )
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
             generator = "parking_sequence"
@@ -30,12 +32,19 @@ public class Parking {
 
     private Integer  nb_places;
 
-@Column(name = "latitude")
+    @Column(name = "latitude")
     private  Double latitude;
 
 
-@Column(name = "longitude")
+    @Column(name = "longitude")
     private Double longitude;
+
+    @OneToMany(mappedBy="parking")
+    private Set<Place> places;
+    @Column(name = "tarif")
+    private  Double tarif;
+    @Column(name = "image")
+    private String image;
 
     public Integer getIdParking() {
         return id_parking;
@@ -98,9 +107,6 @@ public class Parking {
         this.image = image;
     }
 
-    @Column(name = "tarif")
-    private  Double tarif;
-@Column(name = "image")
-    private String image;
+
 
 }

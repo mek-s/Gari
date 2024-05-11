@@ -7,6 +7,7 @@ import com.example.TDM.services.ParkingService;
 import com.example.TDM.services.PlaceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,4 +28,7 @@ public class PlaceController {
     public List<Place> getAllPlaces() {
         return placeService.getAllPlaces();
     }
+
+    @GetMapping("/parking/{id}")
+    public List<Place> getAllParkingPlaces(@PathVariable Integer id){return  this.placeService.getAllPlacesForParking(id);}
 }
