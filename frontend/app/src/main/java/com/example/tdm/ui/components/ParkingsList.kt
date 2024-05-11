@@ -28,48 +28,32 @@ import com.example.tdm.data.models.Parking
 
 
 @Composable
-fun ParkingsList(parkings: List<Parking>, navController: NavHostController) {
-    val context = LocalContext.current
-
+fun ParkingsList(parkings: List<Parking>) {
     LazyColumn(Modifier.height(1000.dp)) {
-        items(parkings) {
+        items(parkings) { parking ->
             Row(
-
                 modifier = Modifier
                     .clip(RoundedCornerShape(4.dp))
                     .padding(4.dp)
                     .background(Color(0xFFE0E0E0))
                     .clickable {
-//                        navController.navigate(Routes.ParkingDetails.createRoute(it.id))
+                        // Handle click action
                     }
-
-
             ) {
-
-//                AsyncImage(
-//                    model = URL + it.image,
-//                    contentDescription = null,
-//                    contentScale = ContentScale.Crop,
-//                    modifier = Modifier
-//                        .weight(1f)
-//                        .aspectRatio(1f)
-//                        .padding(8.dp)
-//                )
-
                 Column(
                     modifier = Modifier.weight(2f)
                 ) {
                     Text(
-                        text = it.name, fontWeight = FontWeight.Bold,
+                        text = parking.name, fontWeight = FontWeight.Bold,
                         fontSize = 12.sp, color = Color(0xFFB125EA)
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = it.commune,
+                        text = parking.commune,
                         fontSize = 11.sp, color = Color(0xFFB125BA)
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text(text = "Nombre de palces  :" + it.nbPlaces)
+                    Text(text = "Nombre de places  :" + parking.nbPlaces)
                 }
             }
         }

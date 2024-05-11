@@ -16,10 +16,16 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.tdm.Endpoint
+import com.example.tdm.data.database
+import com.example.tdm.data.models.Parking
+import com.example.tdm.data.repositories.ParkingRepository
+import com.example.tdm.data.viewModels.ParkingModel
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -28,7 +34,10 @@ fun NavigationMenu(
     navController: NavHostController,
 
     ) {
+    val viewModel: ParkingModel = viewModel()
     val currentindex =navController.currentBackStackEntryAsState().value?.destination?.route
+
+
 
     Scaffold(
 
@@ -75,7 +84,24 @@ fun NavigationMenu(
         ) {
         NavHost(navController = navController, startDestination = Routes.Home.route) {
 
-            composable(Routes.Home.route) {  }
+
+
+//            private val dataBase by lazy { database.getInstance(this) }
+//            private val reservationDao by lazy { dataBase.getReservationDao() }
+//            private val parkingDao by lazy {dataBase.getParkingDao()}
+//            private val userDao by lazy { dataBase.getUserDao() }
+//            private val placeDao by lazy { dataBase.getPlaceDao() }
+//
+//            val reservationRespository by lazy { Endpoint.createEndpoint() }
+//            val parkingRepository by lazy {Endpoint.createEndpoint()}
+//            val placeRepository by lazy { Endpoint.createEndpoint() }
+
+
+            val parkingRepository = ParkingRepository(parkingEndpoint.createEndpoint())
+
+
+            //val parkings = viewModel.allRParkings.value
+            composable(Routes.Home.route) {  DisplayHome(parkingRepository = parkingRepository) }
             composable(Routes.Map.route) {  }
             composable(Routes.MyResv.route) {  }
             composable(Routes.Profile.route) {  }

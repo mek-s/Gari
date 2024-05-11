@@ -1,4 +1,5 @@
-import android.provider.ContactsContract.CommonDataKinds.Website.URL
+
+import com.example.tdm.URL
 import com.example.tdm.data.models.Parking
 import retrofit2.Response
 import retrofit2.Retrofit
