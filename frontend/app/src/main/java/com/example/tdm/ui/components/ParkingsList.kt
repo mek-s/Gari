@@ -46,6 +46,7 @@ fun ParkingsList( navController : NavHostController ,parkings: List<Parking>) {
                 Column(
                     modifier = Modifier.weight(2f)
                 ) {
+                    AsyncImage(model = , contentDescription = )
                     Text(
                         text = parking.name, fontWeight = FontWeight.Bold,
                         fontSize = 12.sp, color = Color(0xFFB125EA)

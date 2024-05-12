@@ -21,6 +21,9 @@ public class Place {
     @Column(name = "reservee")
     private Boolean reservee;
 
+    @Column(name = "id_parking")
+    private Integer parking;
+
 
     public Boolean isReservee() {
         return reservee;

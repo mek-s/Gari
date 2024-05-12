@@ -22,4 +22,7 @@ public class PlaceService  {
 //    public List<Place> getAllPlacesForParking(Integer parkingId) {
 //        return placeRepository.findAllByParkingId(parkingId);
 //    }
+    public List<Place> getParkingPlaces(Integer id){
+        return  this.placeRepository.findByParking(id);
+    }
 }

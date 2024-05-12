@@ -29,6 +29,6 @@ public class PlaceController {
         return placeService.getAllPlaces();
     }
 
-//    @GetMapping("/parking/{id}")
-//    public List<Place> getAllParkingPlaces(@PathVariable Integer id){return  this.placeService.getAllPlacesForParking(id);}
+   @GetMapping("/parking/{id}")
+   public List<Place> getAllParkingPlaces(@PathVariable Integer id){return  this.placeService.getParkingPlaces(id);}
 }
