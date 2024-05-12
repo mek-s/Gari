@@ -82,7 +82,7 @@ fun NavigationMenu(
             composable(Routes.Profile.route) {  }
             composable(Routes.ParkingDetails.route) {
               val parkingId = it.arguments?.getString("parkingId")?.toInt()
-              DisplayParkingDetails(parkingModel , parkingId)
+              DisplayParkingDetails(navController,parkingModel , parkingId)
             }
 
         }

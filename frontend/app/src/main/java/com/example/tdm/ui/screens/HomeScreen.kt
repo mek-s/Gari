@@ -26,11 +26,14 @@ fun DisplayHome(navController : NavHostController, parkingModel: ParkingModel) {
 }
 
 @Composable
-fun DisplayParkingDetails(parkingModel: ParkingModel , parkingId : Int?){
+fun DisplayParkingDetails(navController : NavHostController, parkingModel: ParkingModel , parkingId : Int?){
    if (parkingId != null) parkingModel.getParkingById(parkingId)
-
-    ParkingDetails(parking = parkingModel.parking.value)
-
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+    ParkingDetails(navController ,parkingModel.parking.value)
+    }
 }
 
 @Composable

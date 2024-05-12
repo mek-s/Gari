@@ -4,6 +4,8 @@ import androidx.compose.runtime.Composable
 import com.example.tdm.data.models.Parking
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,8 +19,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.mutableStateOf
@@ -33,74 +39,101 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.tdm.URL
-
+import com.example.tdm.ui.theme.black
+import com.example.tdm.ui.theme.blueBackground
+import com.example.tdm.ui.theme.darkBlue
+import com.example.tdm.ui.theme.lightBlue
+import com.example.tdm.ui.theme.lightGrey
 @Composable
-fun ParkingDetails(parking: Parking?) {
+fun ParkingDetails(navController: NavHostController, parking: Parking?) {
     if (parking != null) {
-
-
         Column(
             modifier = Modifier
                 .padding(8.dp)
                 .fillMaxSize()
         ) {
             Row(
+                verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(150.dp)
-                    .padding(bottom = 10.dp)
+                    .padding(8.dp)
             ) {
-
+                // Back arrow icon
                 Box(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .height(180.dp)
-                        .zIndex(1f)
+                        .size(48.dp)
+                        .clip(CircleShape)
+                        .background(blueBackground)
+                        .clickable {
+                            navController.navigate(Routes.Home.route)
+                        },
+                    contentAlignment = Alignment.Center
                 ) {
-                    AsyncImage(
-                        model = URL + parking.image,
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .aspectRatio(1f)
-                            .padding(8.dp)
+                    Icon(
+                        imageVector = Icons.Filled.KeyboardArrowLeft,
+                        contentDescription = "Arrow Icon",
+                        modifier = Modifier.size(48.dp * 0.6f), // Adjust the size of the icon
+                        tint = darkBlue
                     )
-
                 }
-            }
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(20.dp)
-            ) {
+                // Parking name
                 Text(
                     text = parking.name,
-                    fontSize = 25.sp,
+                    fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(start = 8.dp)
                 )
             }
 
-            Row {
-                Text(text = parking.commune)
-                Text(text = parking.tarif.toString())
-                Text(text = parking.nbPlaces.toString())
+            // Parking image and location
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 10.dp)
+            ) {
+                // Parking image
+                AsyncImage(
+                    model = URL + parking.image,
+                    contentDescription = null,
+                    contentScale = ContentScale.FillWidth,
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(8.dp)
+                        .aspectRatio(1f)
+                        .clip(RoundedCornerShape(25.dp))
+                )
+                // Location icon and text
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.LocationOn,
+                        contentDescription = "Map Icon",
+                        tint = lightGrey
+                    )
+                    Text(
+                        text = parking.commune,
+                        fontSize = 11.sp,
+                        color = lightGrey,
+                        modifier = Modifier.padding(start = 4.dp)
+                    )
+                    Text(text = "Welcome to " + parking.name + "located at " + parking.commune+"our facility offers" +parking.nbPlaces + "well-lit, spacious parking spaces suitable for cars, motorcycles, and bicycles. With 24/7 surveillance and on-site staff, rest assured that your vehicle is in safe hands. ")
+                }
             }
-            Row(
-                horizontalArrangement = Arrangement.End,
+
+            // Book button
+            Button(
+                onClick = { },
+                colors = ButtonDefaults.buttonColors(Color.LightGray),
+                shape = RoundedCornerShape(0.dp),
                 modifier = Modifier
                     .padding(top = 50.dp)
-                    .fillMaxWidth(1f)
+                    .align(Alignment.End)
             ) {
-                Button(
-                    onClick = { },
-                    colors = ButtonDefaults.buttonColors(Color.LightGray),
-                    shape = RoundedCornerShape(0.dp),
-                    modifier = Modifier.padding(end = 10.dp)
-                ) { Text(text = "Book a place") }
-
+                Text(text = "Book a place")
             }
         }
     }
