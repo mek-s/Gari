@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @RestController
 @RequestMapping("/places")
@@ -31,4 +33,19 @@ public class PlaceController {
 
    @GetMapping("/parking/{id}")
    public List<Place> getAllParkingPlaces(@PathVariable Integer id){return  this.placeService.getParkingPlaces(id);}
+
+    @GetMapping("/unreserved/random")
+    public Integer getRandomUnreservedPlaceId() {
+        List<Place> unreservedPlaces = this.placeService.getUnreservedPlaces();
+        if (!unreservedPlaces.isEmpty()) {
+            Random random = new Random();
+            int randomIndex = random.nextInt(unreservedPlaces.size());
+            return unreservedPlaces.get(randomIndex).getId_place();
+        } else {
+            // Handle case where there are no unreserved places
+            return null;
+        }
+    }
+
+
 }

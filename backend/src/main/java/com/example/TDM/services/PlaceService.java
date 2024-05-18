@@ -25,4 +25,8 @@ public class PlaceService  {
     public List<Place> getParkingPlaces(Integer id){
         return  this.placeRepository.findByParking(id);
     }
+
+    public List<Place> getUnreservedPlaces() {
+        return placeRepository.findByReserveeFalse();
+    }
 }

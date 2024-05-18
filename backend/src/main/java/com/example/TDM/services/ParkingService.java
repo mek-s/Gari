@@ -22,4 +22,15 @@ public class ParkingService {
 
     public Optional<Parking> getParkingById(Integer id){return parkingRepository.findById(id);}
 
+
+    public Double getTarifParking(Integer id) {
+        Parking prk = parkingRepository.findById(id).orElse(null);
+        if (prk != null) {
+            return prk.getTarif();
+        } else {
+            // Handle the case when the parking with the given ID is not found
+            return null; // or throw an exception or return a default value
+        }
+    }
+
 }

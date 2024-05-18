@@ -9,4 +9,11 @@ interface PlaceDao {
     @Query("SELECT * FROM place")
      fun getAllPlaces(): List<Place>
 
+
+    @Query("SELECT * FROM place WHERE reservee = 0 ORDER BY RANDOM() LIMIT 1")
+    fun getRandomUnreservedPlace(): Place?
+
+
+
+
 }

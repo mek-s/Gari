@@ -1,5 +1,5 @@
 package com.example.tdm.data.repositories
-import com.example.tdm.endpoints.Endpoint
+import Endpoint
 import android.util.Log
 import com.example.tdm.data.models.Parking
 import retrofit2.Response
@@ -28,8 +28,18 @@ class ParkingRepository(private val endpoint: Endpoint) {
         }
     }
 
+    suspend fun getParkingTariffById(id: Int): Response<Double> {
+        try {
+            val response = endpoint.getParkingTariffById(id)
+            Log.d("ParkingRepository", "Response code: ${response.code()}")
+            return response
+        } catch (e: Exception) {
+            Log.e("ParkingRepository", "Exception: ${e.message}")
+            throw e
+        }
+    }
+
 
 }
-
 
 

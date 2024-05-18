@@ -31,6 +31,28 @@ class ReservationModel(private val reservationRespository: ReservationRespositor
         }
     }
 
+    // Function to create a reservation
+    fun createReservation(reservation: Reservation, callback: (Boolean) -> Unit) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                try {
+                    val response = reservationRespository.createReservation(reservation)
+                    withContext(Dispatchers.Main) {
+                        if (response.isSuccessful) {
+                            callback(true)
+                        } else {
+                            callback(false)
+                        }
+                    }
+                } catch (e: Exception) {
+                    withContext(Dispatchers.Main) {
+                        callback(false)
+                    }
+                }
+            }
+        }
+    }
+
     class Factory(private val reservationRespository: ReservationRespository) :
         ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {

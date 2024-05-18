@@ -1,14 +1,14 @@
-package com.example.tdm.endpoints
 
-import  com.example.tdm.URL
+import com.example.tdm.URL
 import com.example.tdm.data.models.Parking
 import com.example.tdm.data.models.Place
 import com.example.tdm.data.models.Reservation
+import com.example.tdm.data.models.User
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.Path
+import retrofit2.http.*
 
 interface Endpoint {
     @GET("parkings/all")
@@ -19,8 +19,25 @@ interface Endpoint {
 
     @GET("places/all")
     suspend fun getAllPlaces(): Response<List<Place>>
+
     @GET("reservations/all")
     suspend fun getAllResesrvations(): Response<List<Reservation>>
+
+    @POST("user/login")
+    suspend fun login(@Body requestBody: RequestBody): Response<String>
+
+    @POST("user/register")
+    suspend fun createUser(@Body user: User): Response<String>
+
+    @GET("places/unreserved/random")
+    suspend fun getRandomUnreservedPlaceId(): Response<Int?>
+
+
+    @POST("reservation/create")
+    suspend fun createReservation(@Body reservation: Reservation): Response<Reservation>
+
+    @GET("parkings/tarif/{id}")
+    suspend fun getParkingTariffById(@Path("id") id: Int): Response<Double>
 
 
     companion object {

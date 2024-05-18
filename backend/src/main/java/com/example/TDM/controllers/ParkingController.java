@@ -29,4 +29,10 @@ public class ParkingController {
     }
 
 
+    @GetMapping("/tarif/{id}")
+    public Double getAllTarif(@PathVariable Integer id) {
+        return parkingService.getTarifParking(id);
+    }
+
+
 }

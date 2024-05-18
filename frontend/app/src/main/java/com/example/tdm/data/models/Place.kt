@@ -8,6 +8,6 @@ import androidx.room.PrimaryKey
 data class Place(
     @PrimaryKey
     val idPlace: String,
-    val reservee: Boolean,
+    val reservee: Integer,
     val idParking: String
 )
