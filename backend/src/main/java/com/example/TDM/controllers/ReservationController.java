@@ -26,7 +26,7 @@ public class ReservationController {
             Reservation createdReservation = reservationService.createReservation(reservation);
             return new ResponseEntity<>(createdReservation, HttpStatus.CREATED);
         } catch (Exception e) {
-            // Log the error message using System.out.println
+
             System.out.println("Error processing reservation request: " + e.getMessage());
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }

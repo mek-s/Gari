@@ -45,15 +45,17 @@ fun DisplayReservation(
     }
 
     // Function to fetch a random place ID
-    fun fetchRandomPlaceId() {
-        viewModelPlac.randomlyAvailablePlace { placeId ->
+    fun fetchRandomPlaceId(parkingId: Int) {
+        viewModelPlac.randomlyAvailablePlace(parkingId) { placeId ->
             randomPlaceId = placeId
         }
     }
 
     // Fetch randomly available place when the composable is first drawn
     LaunchedEffect(Unit) {
-        fetchRandomPlaceId()
+        if (parkingId != null) {
+            fetchRandomPlaceId(parkingId)
+        }
     }
 
     Column(
@@ -95,6 +97,7 @@ fun DisplayReservation(
                         if (isSuccess) {
                             // Reservation created successfully
                             Toast.makeText(context, "Reservation created successfully", Toast.LENGTH_SHORT).show()
+                            viewModelPlac.reservePlace(randomPlaceId!!)
                         } else {
                             // Failed to create reservation
                             Toast.makeText(context, "Failed to create reservation", Toast.LENGTH_SHORT).show()
@@ -114,7 +117,11 @@ fun DisplayReservation(
 
         // Button to fetch a new random place ID
         Button(
-            onClick = { fetchRandomPlaceId() },
+            onClick = {
+                if (parkingId != null) {
+                    fetchRandomPlaceId(parkingId)
+                }
+            },
             modifier = Modifier.padding(vertical = 16.dp)
         ) {
             Text(text = "Fetch Random Place ID")

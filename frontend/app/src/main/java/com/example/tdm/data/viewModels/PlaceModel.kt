@@ -46,25 +46,42 @@ class PlaceModel(private val placeRespository: PlaceRespository) : ViewModel() {
 
     var randomPlaceId: Int? = null
 
-    fun randomlyAvailablePlace(callback: (Int?) -> Unit) {
+    fun randomlyAvailablePlace(parkingId: Int, callback: (Int?) -> Unit) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 try {
-                    val response = placeRespository.getRandomUnreservedPlaceId()
+                    val response = placeRespository.getRandomUnreservedPlaceId(parkingId)
                     if (response.isSuccessful) {
                         val randomPlaceId = response.body()
                         callback(randomPlaceId)
                     } else {
-                        // Handle case where the response is not successful
                         callback(null)
                     }
                 } catch (e: Exception) {
-                    // Handle any exceptions
                     callback(null)
                 }
             }
         }
     }
+
+
+    fun reservePlace(placeId: Int) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                try {
+                    val response = placeRespository.reservePlace(placeId)
+                    if (response.isSuccessful) {
+
+                    } else {
+
+                    }
+                } catch (e: Exception) {
+
+                }
+            }
+        }
+    }
+
 
 
 

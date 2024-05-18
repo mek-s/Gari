@@ -33,11 +33,20 @@ interface Endpoint {
     suspend fun getRandomUnreservedPlaceId(): Response<Int?>
 
 
-    @POST("reservation/create")
-    suspend fun createReservation(@Body reservation: Reservation): Response<Reservation>
+    @GET("places/unreserved/random/{parkingId}")
+    suspend fun getRandomUnreservedPlaceId(@Path("parkingId") parkingId: Int): Response<Int?>
+
 
     @GET("parkings/tarif/{id}")
     suspend fun getParkingTariffById(@Path("id") id: Int): Response<Double>
+
+    @POST("reservation/create")
+    suspend fun createReservation(@Body reservation: Reservation): Response<Reservation>
+
+
+
+    @POST("places/reserve/{id}")
+    suspend fun reservePlace(@Path("id") id: Int): Response<Unit>
 
 
     companion object {
