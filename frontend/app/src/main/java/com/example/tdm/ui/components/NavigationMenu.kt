@@ -112,7 +112,7 @@ fun NavigationMenu(
 
             composable(Routes.SignUp.route)
             {
-               DisplaySignUp(authViewModel)
+               DisplaySignUp(authViewModel, navController)
             }
         }
     }

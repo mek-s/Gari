@@ -28,6 +28,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.*
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import android.widget.Toast
+import androidx.compose.ui.platform.LocalContext
+
 
 import com.example.tdm.R
 
@@ -38,9 +41,8 @@ fun DisplayLogin(viewModel: AuthViewModel, navHostController: NavHostController)
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var errorMessage by remember { mutableStateOf("") }
-    var isLoggedIn = remember {
-        mutableStateOf(false)
-    }
+    var isLoggedIn = remember { mutableStateOf(false) }
+    var currentUsername by remember { mutableStateOf<String?>(null) }
 
 
     if (isLoggedIn.value) {
@@ -76,19 +78,22 @@ fun DisplayLogin(viewModel: AuthViewModel, navHostController: NavHostController)
             Spacer(modifier = Modifier.height(16.dp))
             Button(
                 onClick = {
-                    viewModel.authenticate(username, password) { success ->
-                        if (success) {
-                            // Navigate to home upon successful login
+                    viewModel.authenticate(username, password) { loggedInUsername ->
+                        currentUsername = loggedInUsername
+
+                        // Navigate to home route only if loggedInUsername is not null and not empty
+                        if (!currentUsername.isNullOrEmpty()) {
                             navHostController.navigate(Routes.Home.route)
-                        } else {
-                            // Handle unsuccessful login if needed
                         }
                     }
                 },
-                enabled = username.isNotBlank() && password.isNotBlank() // Disable button if username or password is empty
+                enabled = username.isNotBlank() && password.isNotBlank()
             ) {
-                Text(text = "Login")
+                Text("Login")
             }
+            Text(text = "Logged in as: $currentUsername")
+            // Display loggedInUsername if available
+
             Spacer(modifier = Modifier.height(10.dp))
             Button(
                 onClick = {

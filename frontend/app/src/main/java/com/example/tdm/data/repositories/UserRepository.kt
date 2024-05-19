@@ -10,13 +10,16 @@ class UserRepository(private val endpoint: Endpoint) {
         private const val TAG = "UserRepository"
     }
 
+
+
     suspend fun login(username: String, password: String): Response<String> {
-        // Convert username and password to form data
         val formData = "username=$username&password=$password"
         val requestBody = formData.toRequestBody("application/x-www-form-urlencoded".toMediaTypeOrNull())
 
         return endpoint.login(requestBody)
     }
+
+
 
     suspend fun createUser(user: User): Response<String> {
         return endpoint.createUser(user)

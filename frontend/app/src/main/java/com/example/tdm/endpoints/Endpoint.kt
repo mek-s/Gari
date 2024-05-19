@@ -23,6 +23,7 @@ interface Endpoint {
     @GET("reservations/all")
     suspend fun getAllResesrvations(): Response<List<Reservation>>
 
+
     @POST("user/login")
     suspend fun login(@Body requestBody: RequestBody): Response<String>
 

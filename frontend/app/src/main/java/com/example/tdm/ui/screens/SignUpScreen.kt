@@ -17,10 +17,14 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.tdm.data.models.User
 
 @Composable
-fun DisplaySignUp(authViewModel: AuthViewModel = viewModel()) {
+fun DisplaySignUp(
+    authViewModel: AuthViewModel = viewModel(),
+    navHostController: NavHostController
+     ) {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
@@ -87,7 +91,7 @@ fun DisplaySignUp(authViewModel: AuthViewModel = viewModel()) {
                 authViewModel.createUser(
                     User(username, password, nom, prenom, "")
                 ) { success ->
-                    // Handle sign-up result, if needed
+                    navHostController.navigate(Routes.Login.route)
                 }
             },
             enabled = username.isNotBlank() && nom.isNotBlank() && prenom.isNotBlank() &&

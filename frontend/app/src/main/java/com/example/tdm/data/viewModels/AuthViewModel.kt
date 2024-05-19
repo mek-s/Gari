@@ -21,32 +21,32 @@ class AuthViewModel(
     private val _loginError = MutableStateFlow<String?>(null)
     val loginError = _loginError.asStateFlow()
 
-    fun authenticate(username: String, password: String, onLoginResult: (Boolean) -> Unit) {
+    fun authenticate(username: String, password: String, callback: (String?) -> Unit) {
         viewModelScope.launch {
-            var success = false // Initialize success status
-            // Your authentication logic remains the same
-            try {
-                val response = userRepository.login(username, password)
+            withContext(Dispatchers.IO) {
+                try {
+                    val response = userRepository.login(username, password)
+                    val loggedInUsername = response.body()
 
-                if (response.isSuccessful) {
-                    val loggedInUsername = response.body() ?: ""
-                    if (loggedInUsername.isNotEmpty() && loggedInUsername != "Login failed") {
-                        _currentUsername.value = loggedInUsername
-                        sharedPreferencesManager.setLoggedIn(true)
-                        success = true // Set success to true upon successful login
+                    if (response.isSuccessful && loggedInUsername != null) {
+                        callback(loggedInUsername)
                     } else {
-                        _loginError.value = "Authentication failed"
+                        callback(null)
                     }
-                } else {
-                    _loginError.value = "Authentication failed: ${response.code()}"
+                } catch (e: Exception) {
+                    callback(null)
                 }
-            } catch (e: Exception) {
-                _loginError.value = "Authentication failed: ${e.message}"
             }
-            // Invoke the callback with the success status
-            onLoginResult(success)
         }
     }
+
+
+
+
+
+
+
+
 
     fun createUser(user: User, onCreateUserResult: (Boolean) -> Unit) {
         viewModelScope.launch {
