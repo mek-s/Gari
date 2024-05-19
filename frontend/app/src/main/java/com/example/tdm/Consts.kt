@@ -1,3 +1,3 @@
 package com.example.tdm
-const val URL = "https://5c78-105-235-129-62.ngrok-free.app/"
+const val URL = "https://dfca-105-235-129-47.ngrok-free.app/"
 
