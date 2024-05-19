@@ -1,7 +1,10 @@
+import android.util.Log
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
+import com.example.tdm.data.models.Parking
 import com.example.tdm.data.models.User
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
@@ -17,6 +20,7 @@ class AuthViewModel(
 
     private val _currentUsername = MutableStateFlow("")
     val currentUsername = _currentUsername.asStateFlow()
+    var user = mutableStateOf<String?>(null)
 
     private val _loginError = MutableStateFlow<String?>(null)
     val loginError = _loginError.asStateFlow()
@@ -26,19 +30,51 @@ class AuthViewModel(
             withContext(Dispatchers.IO) {
                 try {
                     val response = userRepository.login(username, password)
-                    val loggedInUsername = response.body()
 
-                    if (response.isSuccessful && loggedInUsername != null) {
-                        callback(loggedInUsername)
-                    } else {
-                        callback(null)
+
+                    if (response.isSuccessful) {
+                        val loggedInUsername = response.body()
+                        if (!loggedInUsername.isNullOrEmpty()) {
+                            callback(loggedInUsername)
+                            return@withContext // Return early if the username is not null or empty
+                        }
                     }
+
+                    // If the response is successful but the username is null or empty, or if the response is not successful
+                    callback(null)
                 } catch (e: Exception) {
                     callback(null)
                 }
             }
         }
     }
+    fun login(username: String, password: String) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                try {
+                    val response = userRepository.login(username, password)
+
+                    if (response.isSuccessful) {
+                        val res = response.body()
+                        Log.v("ParkingModel222", "Parkings received: ${response.body()}")
+                        if (res != null) {
+                            user.value = res
+                            setLoggedIn(true)
+                            sharedPreferencesManager.setLocalUsername(user.value!!)
+                            Log.d("ParkingModel3333", "${user.value}")
+                        }
+                    } else {
+                        Log.d("ParkingModel", "is null")
+
+                    }
+                } catch (e: Exception) {
+                    Log.d("ParkingModel", e.message.toString())
+
+                }
+            }
+        }
+    }
+
 
 
 

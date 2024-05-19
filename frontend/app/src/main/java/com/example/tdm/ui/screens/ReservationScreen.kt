@@ -5,6 +5,7 @@ import android.widget.DatePicker
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -14,119 +15,160 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.tdm.data.models.Reservation
 import com.example.tdm.data.viewModels.ParkingModel
 import com.example.tdm.data.viewModels.PlaceModel
+import com.example.tdm.ui.components.ReservationList
 import java.util.*
 
 @Composable
 fun DisplayReservation(
     parkingId: Int?,
+    isLoggedIn: Boolean,
+    username: String,
     viewModelReserv: ReservationModel,
     viewModelPark: ParkingModel,
-    viewModelPlac: PlaceModel
+    viewModelPlac: PlaceModel,
+    navHostController: NavHostController
 ) {
-    var date by remember { mutableStateOf("") }
-    var heureEntr by remember { mutableStateOf("") }
-    var heureSort by remember { mutableStateOf("") }
-    var parkingTariff by remember { mutableStateOf(0.0) }
-    var randomPlaceId by remember { mutableStateOf<Int?>(null) }
 
-    val prix = remember { mutableStateOf(0.0) }
-    val context = LocalContext.current
+    if ( isLoggedIn) {
+        var date by remember { mutableStateOf("") }
+        var heureEntr by remember { mutableStateOf("") }
+        var heureSort by remember { mutableStateOf("") }
+        var parkingTariff by remember { mutableStateOf(0.0) }
+        var randomPlaceId by remember { mutableStateOf<Int?>(null) }
 
-    // Fetch parking tariff by ID
-    LaunchedEffect(parkingId) {
-        if (parkingId != null) {
-            viewModelPark.getParkingTariffById(parkingId) { tariff ->
-                parkingTariff = tariff ?: 0.0
+        val prix = remember { mutableStateOf(0.0) }
+        val context = LocalContext.current
+
+        // Fetch parking tariff by ID
+        LaunchedEffect(parkingId) {
+            if (parkingId != null) {
+                viewModelPark.getParkingTariffById(parkingId) { tariff ->
+                    parkingTariff = tariff ?: 0.0
+                }
             }
         }
-    }
 
-    // Function to fetch a random place ID
-    fun fetchRandomPlaceId(parkingId: Int) {
-        viewModelPlac.randomlyAvailablePlace(parkingId) { placeId ->
-            randomPlaceId = placeId
+        // Function to fetch a random place ID
+        fun fetchRandomPlaceId(parkingId: Int) {
+            viewModelPlac.randomlyAvailablePlace(parkingId) { placeId ->
+                randomPlaceId = placeId
+            }
         }
-    }
 
-    // Fetch randomly available place when the composable is first drawn
-    LaunchedEffect(Unit) {
-        if (parkingId != null) {
-            fetchRandomPlaceId(parkingId)
+        // Fetch randomly available place when the composable is first drawn
+        LaunchedEffect(Unit) {
+            if (parkingId != null) {
+                fetchRandomPlaceId(parkingId)
+            }
         }
-    }
 
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier
-            .fillMaxHeight()
-            .padding(16.dp)
-            .height(400.dp)
-    ) {
-        DateDisplay(onDateSelected = { selectedDate ->
-            date = selectedDate
-        })
-        Spacer(modifier = Modifier.height(16.dp))
-        TimeDisplay(onTimeSelected = { selectedTime ->
-            heureEntr = selectedTime
-        })
-        Spacer(modifier = Modifier.height(16.dp))
-        TimeDisplay(onTimeSelected = { selectedTime ->
-            heureSort = selectedTime
-        })
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxHeight()
+                .padding(16.dp)
+                .height(400.dp)
+        ) {
+            DateDisplay(onDateSelected = { selectedDate ->
+                date = selectedDate
+            })
+            Spacer(modifier = Modifier.height(16.dp))
+            TimeDisplay(onTimeSelected = { selectedTime ->
+                heureEntr = selectedTime
+            })
+            Spacer(modifier = Modifier.height(16.dp))
+            TimeDisplay(onTimeSelected = { selectedTime ->
+                heureSort = selectedTime
+            })
 
-        Spacer(modifier = Modifier.height(32.dp))
-        Button(
-            onClick = {
-                if (date.isNotBlank() && heureEntr.isNotBlank() && heureSort.isNotBlank() && randomPlaceId != null) {
-                    val prixValue = calculatePrice(heureEntr, heureSort, parkingTariff)
-                    val reservation = Reservation(
-                        id_reservation = 0, // or generate an appropriate ID
-                        id_place = randomPlaceId!!, // Use randomPlaceId and ensure it's not null
-                        date = date, // Sending date as string
-                        heure_entree = heureEntr, // Sending time as string
-                        heure_sortie = heureSort, // Sending time as string
-                        code_qr = "ABCD",
-                        prix = prixValue
-                    )
+            Spacer(modifier = Modifier.height(32.dp))
+            Button(
+                onClick = {
+                    if (date.isNotBlank() && heureEntr.isNotBlank() && heureSort.isNotBlank() && randomPlaceId != null) {
+                        val prixValue = calculatePrice(heureEntr, heureSort, parkingTariff)
+                        val reservation = Reservation(
+                            id_reservation = 0, // or generate an appropriate ID
+                            id_place = randomPlaceId!!, // Use randomPlaceId and ensure it's not null
+                            date = date, // Sending date as string
+                            heure_entree = heureEntr, // Sending time as string
+                            heure_sortie = heureSort, // Sending time as string
+                            code_qr = "ABCD",
+                            prix = prixValue,
+                            username = username
+                        )
 
-                    viewModelReserv.createReservation(reservation) { isSuccess ->
-                        if (isSuccess) {
-                            // Reservation created successfully
-                            Toast.makeText(context, "Reservation created successfully", Toast.LENGTH_SHORT).show()
-                            viewModelPlac.reservePlace(randomPlaceId!!)
-                        } else {
-                            // Failed to create reservation
-                            Toast.makeText(context, "Failed to create reservation", Toast.LENGTH_SHORT).show()
+                        viewModelReserv.createReservation(reservation) { isSuccess ->
+                            if (isSuccess) {
+                                // Reservation created successfully
+                                Toast.makeText(context, "Reservation created successfully", Toast.LENGTH_SHORT).show()
+                                viewModelPlac.reservePlace(randomPlaceId!!)
+                            } else {
+                                // Failed to create reservation
+                                Toast.makeText(context, "Failed to create reservation", Toast.LENGTH_SHORT).show()
+                            }
                         }
                     }
-                }
-            },
-            enabled = date.isNotBlank() && heureEntr.isNotBlank() && heureSort.isNotBlank() && randomPlaceId != null
-        ) {
-            Text(text = "Book Parking")
+                },
+                enabled = date.isNotBlank() && heureEntr.isNotBlank() && heureSort.isNotBlank() && randomPlaceId != null
+            ) {
+                Text(text = "Book Parking")
+            }
+
+            // Display the fetched random place ID
+            if (randomPlaceId != null) {
+                Text(text = "Random Place ID: $randomPlaceId", modifier = Modifier.padding(vertical = 16.dp))
+            }
+
+            // Button to fetch a new random place ID
+            Button(
+                onClick = {
+                    if (parkingId != null) {
+                        fetchRandomPlaceId(parkingId)
+                    }
+                },
+                modifier = Modifier.padding(vertical = 16.dp)
+            ) {
+                Text(text = "Fetch Random Place ID")
+            }
         }
 
-        // Display the fetched random place ID
-        if (randomPlaceId != null) {
-            Text(text = "Random Place ID: $randomPlaceId", modifier = Modifier.padding(vertical = 16.dp))
-        }
 
-        // Button to fetch a new random place ID
-        Button(
-            onClick = {
-                if (parkingId != null) {
-                    fetchRandomPlaceId(parkingId)
-                }
-            },
-            modifier = Modifier.padding(vertical = 16.dp)
-        ) {
-            Text(text = "Fetch Random Place ID")
-        }
     }
+    else {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ){
+            Text(
+                text = "Please log in to view ur reservations.",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            )
+            Button(
+                onClick = { navHostController.navigate(Routes.Login.route) },
+
+                colors = ButtonDefaults.buttonColors(Color(0xFFFF5722)),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 12.dp)
+            ) {
+                Text("Log In")
+            }
+
+        }
+
+
+
+    }
+
+
+
 }
 
 

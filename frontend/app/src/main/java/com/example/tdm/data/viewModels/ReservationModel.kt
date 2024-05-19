@@ -1,9 +1,13 @@
+import android.util.Log
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.example.tdm.data.models.Parking
 import com.example.tdm.data.models.Reservation
 import com.example.tdm.data.repositories.ReservationRespository
+import com.example.tdm.ui.components.ReservationList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -12,6 +16,7 @@ import retrofit2.Response
 class ReservationModel(private val reservationRespository: ReservationRespository) : ViewModel() {
 
     var allReservations = mutableStateOf<List<Reservation>>(emptyList())
+    var allR = mutableStateOf(listOf<Reservation>())
 
 
     fun getAllReservations() {
@@ -52,6 +57,29 @@ class ReservationModel(private val reservationRespository: ReservationRespositor
             }
         }
     }
+
+    fun getReservationsByUsername(username: String) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+
+                val response = reservationRespository.getReservationsByUsername(username)
+                if (response.isSuccessful) {
+                    allR.value = response.body() ?: emptyList()
+                } else {
+                    // Handle unsuccessful response
+                    println("Failed to fetch reservations by username: ${response.message()}")
+                    allR.value = emptyList()
+                }
+            }
+        }
+
+    }
+
+
+
+
+
+
 
     class Factory(private val reservationRespository: ReservationRespository) :
         ViewModelProvider.Factory {

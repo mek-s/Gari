@@ -1,5 +1,6 @@
 package com.example.tdm.data.models
 
+import androidx.annotation.StringDef
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.Date
@@ -13,7 +14,8 @@ data class Reservation(
     val heure_entree: String,
     val heure_sortie: String,
     val code_qr: String,
-    val prix: Double
+    val prix: Double,
+    val username:String
 
 )
 

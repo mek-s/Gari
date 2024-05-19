@@ -15,4 +15,7 @@ interface ReservationDao {
     @Insert
     fun insertReservation(r: Reservation)
 
+    @Query("SELECT * FROM reservation WHERE username = :username")
+    fun getReservationsByUsername(username: String): List<Reservation>
+
 }

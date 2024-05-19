@@ -28,6 +28,14 @@ public class Reservation {
     @Column(name = "prix")
     private Double prix;
 
+    @Column(name = "username")
+    private String username;
+
+
+    public String getUsername() {
+        return username;
+    }
+
     public Integer getId_place() {
         return id_place;
     }

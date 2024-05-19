@@ -44,6 +44,13 @@ fun DisplayLogin(viewModel: AuthViewModel, navHostController: NavHostController)
     var isLoggedIn = remember { mutableStateOf(false) }
     var currentUsername by remember { mutableStateOf<String?>(null) }
 
+    currentUsername = viewModel.user.value
+    if (!currentUsername.isNullOrEmpty()) {
+        LaunchedEffect(Unit ){
+            navHostController.navigate(Routes.Home.route)
+        }
+
+    }
 
     if (isLoggedIn.value) {
         navHostController.navigate(Routes.Home.route)
@@ -78,20 +85,15 @@ fun DisplayLogin(viewModel: AuthViewModel, navHostController: NavHostController)
             Spacer(modifier = Modifier.height(16.dp))
             Button(
                 onClick = {
-                    viewModel.authenticate(username, password) { loggedInUsername ->
-                        currentUsername = loggedInUsername
+                    viewModel.login(username, password)
 
-                        // Navigate to home route only if loggedInUsername is not null and not empty
-                        if (!currentUsername.isNullOrEmpty()) {
-                            navHostController.navigate(Routes.Home.route)
-                        }
-                    }
+
                 },
                 enabled = username.isNotBlank() && password.isNotBlank()
             ) {
                 Text("Login")
             }
-            Text(text = "Logged in as: $currentUsername")
+            Text(text = "Logged in as: ${viewModel.user.value}")
             // Display loggedInUsername if available
 
             Spacer(modifier = Modifier.height(10.dp))
@@ -123,24 +125,32 @@ fun DisplayLogin(viewModel: AuthViewModel, navHostController: NavHostController)
             Spacer(modifier = Modifier.height(16.dp))
             Text(text = "Or Sign In With ")
             Row(
-                modifier = Modifier.fillMaxWidth().padding(40.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(40.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.facebook),
                     contentDescription = "Facebook",
-                    modifier = Modifier.size(40.dp).clickable { /* Handle click */ }
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clickable { /* Handle click */ }
                 )
 
                 Image(
                     painter = painterResource(id = R.drawable.google),
                     contentDescription = "Google",
-                    modifier = Modifier.size(40.dp).clickable { /* Handle click */ }
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clickable { /* Handle click */ }
                 )
                 Image(
                     painter = painterResource(id = R.drawable.twitter),
                     contentDescription = "Twitter",
-                    modifier = Modifier.size(40.dp).clickable { /* Handle click */ }
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clickable { /* Handle click */ }
                 )
             }
 

@@ -39,6 +39,7 @@ fun NavigationMenu(
 
     val sh = SharedPreferencesManager(context)
     val isLoggedIn = sh.isLoggedIn()
+    val LocalUsername = sh.getLocalUsername()
 
     Scaffold(
         bottomBar = {
@@ -67,8 +68,8 @@ fun NavigationMenu(
 
                         NavigationBarItem(
                             label = { Text(text = "MyBookings") },
-                            selected = currentindex == Routes.MyResv.route,
-                            onClick = { navController.navigate(Routes.MyResv.route) },
+                            selected = currentindex == Routes.MyReserv.route,
+                            onClick = { navController.navigate(Routes.MyReserv.route) },
                             icon = { Icon(Icons.Default.DateRange, contentDescription = "MyBookings") }
                         )
 
@@ -86,19 +87,27 @@ fun NavigationMenu(
         NavHost(navController = navController, startDestination = Routes.Home.route) {
             composable(Routes.Home.route) {  DisplayHome(navController ,parkingModel) }
             composable(Routes.Map.route) {  }
-            composable(Routes.MyResv.route) {
-                DisplayMyReservations(isLoggedIn = isLoggedIn, viewModel = authViewModel, navHostController = navController )
+
+            composable(Routes.Profile.route) {
+                if (LocalUsername != null) {
+                    DisplayMyProfile(
+                        isLoggedIn = isLoggedIn,
+                        LocalUsername = LocalUsername,
+                        viewModel = authViewModel,
+                        navHostController = navController
+                    )
+                }
             }
-            composable(Routes.Profile.route) { DisplayMyProfile(
-                isLoggedIn = isLoggedIn,
-                viewModel = authViewModel,
-                navHostController = navController
-            )  }
             composable(Routes.Reserv.route)
             {
                 val parkingId = it.arguments?.getString("parkingId")?.toInt()
-                DisplayReservation(parkingId, reservationModel, parkingModel, placeModel )
+                if (LocalUsername != null) {
+                    DisplayReservation(parkingId,isLoggedIn, LocalUsername, reservationModel, parkingModel, placeModel, navController )
+                }
             }
+
+
+
             composable(Routes.ParkingDetails.route) {
                 val parkingId = it.arguments?.getString("parkingId")?.toInt()
                 DisplayParkingDetails(navController,parkingModel , parkingId)
@@ -106,6 +115,16 @@ fun NavigationMenu(
             composable(Routes.Login.route) {
                 DisplayLogin(authViewModel, navController)
             }
+
+
+            composable(Routes.MyReserv.route) {
+
+                if (LocalUsername != null) {
+                    DisplayMyReservations(isLoggedIn = isLoggedIn, username  = LocalUsername,  viewModel = authViewModel, navHostController = navController, viewModelReserv = reservationModel )
+                }
+            }
+
+
 
 
 
