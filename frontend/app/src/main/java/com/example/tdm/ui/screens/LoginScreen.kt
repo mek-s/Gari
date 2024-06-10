@@ -29,6 +29,8 @@ import androidx.compose.runtime.*
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import android.widget.Toast
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.ui.platform.LocalContext
 
 
@@ -60,10 +62,8 @@ fun DisplayLogin(viewModel: AuthViewModel, navHostController: NavHostController)
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.logo),
-                contentDescription = "Logo"
-            )
+            HeaderDesign() // Display centered logo header
+
             Text(text = "Welcome Back ")
             Spacer(modifier = Modifier.height(4.dp))
             Text(text = "Login Into Your Account")
@@ -83,31 +83,45 @@ fun DisplayLogin(viewModel: AuthViewModel, navHostController: NavHostController)
                 visualTransformation = PasswordVisualTransformation()
             )
             Spacer(modifier = Modifier.height(16.dp))
+
+
+
+            Button(
+                onClick = {
+                    // Handle Google login
+                },
+                colors = ButtonDefaults.buttonColors(Color(0xFFFFFFFF)),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp)
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.google),
+                        contentDescription = "Google",
+                        modifier = Modifier.size(24.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("Login with Google", color = Color.Black)
+                }
+            }
+
             Button(
                 onClick = {
                     viewModel.login(username, password)
-
-
                 },
                 enabled = username.isNotBlank() && password.isNotBlank()
             ) {
                 Text("Login")
             }
             Text(text = "Logged in as: ${viewModel.user.value}")
-            // Display loggedInUsername if available
 
             Spacer(modifier = Modifier.height(10.dp))
+
             Button(
                 onClick = {
-                    navHostController.navigate(Routes.Home.route)
-                },
-            ) {
-                Text(text = "Home Page")
-            }
-            Spacer(modifier = Modifier.height(10.dp))
-            Button(
-                onClick = {
-                    // Navigate to the sign-up screen
                     navHostController.navigate(Routes.SignUp.route)
                 }
             ) {
@@ -122,38 +136,6 @@ fun DisplayLogin(viewModel: AuthViewModel, navHostController: NavHostController)
                 text = "Forgot your Password ? ",
                 modifier = Modifier.clickable { /* Handle click */ }
             )
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(text = "Or Sign In With ")
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(40.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.facebook),
-                    contentDescription = "Facebook",
-                    modifier = Modifier
-                        .size(40.dp)
-                        .clickable { /* Handle click */ }
-                )
-
-                Image(
-                    painter = painterResource(id = R.drawable.google),
-                    contentDescription = "Google",
-                    modifier = Modifier
-                        .size(40.dp)
-                        .clickable { /* Handle click */ }
-                )
-                Image(
-                    painter = painterResource(id = R.drawable.twitter),
-                    contentDescription = "Twitter",
-                    modifier = Modifier
-                        .size(40.dp)
-                        .clickable { /* Handle click */ }
-                )
-            }
-
         }
     }
 }

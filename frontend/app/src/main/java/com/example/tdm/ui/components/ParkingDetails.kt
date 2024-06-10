@@ -57,6 +57,15 @@ fun ParkingDetails(navController: NavHostController, parking: Parking?) {
                 .padding(8.dp)
                 .fillMaxSize()
         ) {
+            Button(
+                onClick = {
+                    navController.navigate(Routes.Reserv.createRoute(parking.idParking))
+
+                },
+
+                ) {
+                Text(text = "Book Park")
+            }
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
@@ -137,6 +146,18 @@ fun ParkingDetails(navController: NavHostController, parking: Parking?) {
             ) {
                 Text(text = "Book a place")
             }
+        }
+    }
+    else {
+
+
+        Button(
+            onClick = {
+
+            },
+
+            ) {
+            Text(text = "aaaaaaaaaa")
         }
     }
 }

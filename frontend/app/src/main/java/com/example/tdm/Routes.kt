@@ -13,6 +13,14 @@ sealed class Routes (val route: String) {
 
     object SignUp : Routes ("SignUpScreen")
 
+    object Notification : Routes ("NotificationScreen")
+
+    object Security : Routes ("SecurityScreen")
+
+    object InfoProfile : Routes ("InfoProfileScreen")
+
+
+    //to create a new reservation
     object Reserv: Routes ("ReservationScreen/{parkingId}")
     {
         fun createRoute (parkingId: Int?) = "ReservationScreen/$parkingId"
@@ -24,7 +32,12 @@ sealed class Routes (val route: String) {
     }
 
     object MyReserv : Routes("MyReserv/{username}") {
-        fun createRoute(username: String?) = "ParkingDetails/$username"
+        fun createRoute(username: String?, parkingId: Int?) = "MyReserv/$username"
+    }
+
+
+    object ReservationDetails : Routes("ReservationDetails/{reservationId}") {
+        fun createRoute(reservationId: Int?, parkingId: Int?) = "ReservationDetails/$reservationId"
     }
 
 

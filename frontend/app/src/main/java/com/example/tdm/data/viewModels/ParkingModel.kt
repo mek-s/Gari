@@ -2,6 +2,7 @@ package com.example.tdm.data.viewModels
 
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -14,8 +15,12 @@ import kotlinx.coroutines.withContext
 class ParkingModel(private val parkingRepository: ParkingRepository) : ViewModel()  {
     var allRParkings = mutableStateOf(listOf<Parking>())
     var parking = mutableStateOf<Parking?>(null)
+    val allP = MutableLiveData<List<Parking?>>()
     var loading = mutableStateOf(false)
     var displayMsg = mutableStateOf(false)
+    var idParking = mutableStateOf<Int?>(0)
+    var nomParking = mutableStateOf<String?>("")
+    var imageParking= mutableStateOf<String?>("")
 
 
     fun getAllParkings() {
@@ -58,6 +63,8 @@ class ParkingModel(private val parkingRepository: ParkingRepository) : ViewModel
                         val res = response.body()
                         if (res != null) {
                             parking.value = res
+                            nomParking.value = res.name
+                            imageParking.value = res.image
                             Log.d("ParkingModel", "Parkings received: ${parking.value}")
                         }
                     } else {
@@ -71,6 +78,7 @@ class ParkingModel(private val parkingRepository: ParkingRepository) : ViewModel
             }
         }
     }
+
 
 
     fun saveParking(parking: Parking){

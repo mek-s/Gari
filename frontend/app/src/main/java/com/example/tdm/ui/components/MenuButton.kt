@@ -30,7 +30,11 @@ fun MenuButton1(text: String, icon: ImageVector, onClick: () -> Unit) {
 }
 
 @Composable
-fun MenuButton2(text: String, icon: ImageVector, onClick: () -> Unit) {
+fun MenuButton2(
+    text: String,
+    icon: ImageVector,
+    onClick: () -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -38,12 +42,12 @@ fun MenuButton2(text: String, icon: ImageVector, onClick: () -> Unit) {
             .clickable(onClick = onClick),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
-
     ) {
         Icon(icon, contentDescription = null)
         Spacer(Modifier.width(8.dp))
         Text(
             text,
-            fontWeight = FontWeight.Bold)
+            fontWeight = FontWeight.Bold
+        )
     }
 }

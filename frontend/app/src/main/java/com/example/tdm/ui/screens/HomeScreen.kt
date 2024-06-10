@@ -35,15 +35,7 @@ fun DisplayHome(navController : NavHostController, parkingModel: ParkingModel) {
 fun DisplayParkingDetails(navController : NavHostController, parkingModel: ParkingModel , parkingId : Int?){
    if (parkingId != null) parkingModel.getParkingById(parkingId)
     Spacer(modifier = Modifier.height(16.dp))
-    Button(
-        onClick = {
-            navController.navigate(Routes.Reserv.createRoute(parkingId))
-            //navController.navigate(Routes.Reserv.route)
-        },
 
-    ) {
-        Text(text = "Book Park")
-    }
     Spacer(modifier = Modifier.height(16.dp))
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,

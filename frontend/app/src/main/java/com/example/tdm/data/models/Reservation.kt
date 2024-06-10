@@ -7,15 +7,14 @@ import java.util.Date
 
 @Entity(tableName = "reservation")
 data class Reservation(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     val id_reservation: Int,
     val id_place: Int,
+    val idParking: Int,
     val date: String,
     val heure_entree: String,
     val heure_sortie: String,
-    val code_qr: String,
+    val codeQr: String,
     val prix: Double,
-    val username:String
-
+    val username: String
 )
-

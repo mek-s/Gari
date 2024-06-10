@@ -32,8 +32,13 @@ class MainActivity : androidx.activity.ComponentActivity() {
         PlaceModel.Factory((application as TDMApplication).placeRepository)
     }
 
+
     private val reservationModel: ReservationModel by viewModels {
-        ReservationModel.Factory((application as TDMApplication).reservationRespository)
+        ReservationModel.Factory(
+            (application as TDMApplication).reservationRespository,
+            (application as TDMApplication).reservationDao
+        )
+
     }
 
 

@@ -92,5 +92,7 @@ dependencies {
     testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.2")
     //MockWebserver
     testImplementation ("com.squareup.okhttp3:mockwebserver:4.9.1")
+    // QR Code
+    implementation("com.lightspark:compose-qr-code:1.0.1")
 
 }

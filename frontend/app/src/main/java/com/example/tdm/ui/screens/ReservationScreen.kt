@@ -1,9 +1,11 @@
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.content.Context
 import android.widget.DatePicker
 import android.widget.Toast
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
@@ -12,36 +14,57 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
+import androidx.navigation.NavController
+import com.example.tdm.R
 import com.example.tdm.data.models.Reservation
 import com.example.tdm.data.viewModels.ParkingModel
 import com.example.tdm.data.viewModels.PlaceModel
-import com.example.tdm.ui.components.ReservationList
+import com.lightspark.composeqr.DotShape
+import com.lightspark.composeqr.QrCodeColors
+import com.lightspark.composeqr.QrCodeView
 import java.util.*
 
 @Composable
 fun DisplayReservation(
-    parkingId: Int?,
+    parkingId: Int,
     isLoggedIn: Boolean,
     username: String,
     viewModelReserv: ReservationModel,
     viewModelPark: ParkingModel,
     viewModelPlac: PlaceModel,
-    navHostController: NavHostController
+    navController: NavController
 ) {
-
-    if ( isLoggedIn) {
+    if (isLoggedIn) {
         var date by remember { mutableStateOf("") }
         var heureEntr by remember { mutableStateOf("") }
         var heureSort by remember { mutableStateOf("") }
+        var codeQrr by remember { mutableStateOf("") }
         var parkingTariff by remember { mutableStateOf(0.0) }
         var randomPlaceId by remember { mutableStateOf<Int?>(null) }
+        var reservation by remember { mutableStateOf<Reservation?>(null) }
+        var showDialog by remember { mutableStateOf(false) }
 
-        val prix = remember { mutableStateOf(0.0) }
         val context = LocalContext.current
+
+        val crt = viewModelReserv.created
+        if (crt == 1 ) {
+            LaunchedEffect(Unit ){
+                Toast.makeText(
+                    context,
+                    "Reservation created successfully",
+                    Toast.LENGTH_SHORT
+                ).show()
+                showDialog = true
+
+            }
+
+        }
 
         // Fetch parking tariff by ID
         LaunchedEffect(parkingId) {
@@ -60,7 +83,7 @@ fun DisplayReservation(
         }
 
         // Fetch randomly available place when the composable is first drawn
-        LaunchedEffect(Unit) {
+        LaunchedEffect(parkingId) {
             if (parkingId != null) {
                 fetchRandomPlaceId(parkingId)
             }
@@ -89,29 +112,33 @@ fun DisplayReservation(
             Spacer(modifier = Modifier.height(32.dp))
             Button(
                 onClick = {
-                    if (date.isNotBlank() && heureEntr.isNotBlank() && heureSort.isNotBlank() && randomPlaceId != null) {
+                    if (date.isNotBlank() && heureEntr.isNotBlank() && heureSort.isNotBlank() && randomPlaceId != null && parkingId != null) {
                         val prixValue = calculatePrice(heureEntr, heureSort, parkingTariff)
-                        val reservation = Reservation(
-                            id_reservation = 0, // or generate an appropriate ID
-                            id_place = randomPlaceId!!, // Use randomPlaceId and ensure it's not null
-                            date = date, // Sending date as string
-                            heure_entree = heureEntr, // Sending time as string
-                            heure_sortie = heureSort, // Sending time as string
-                            code_qr = "ABCD",
+                        val newReservation = Reservation(
+                            id_reservation = 0,
+                            id_place = randomPlaceId!!,
+                            idParking = parkingId,
+                            date = date,
+                            heure_entree = heureEntr,
+                            heure_sortie = heureSort,
+                            codeQr = "",
                             prix = prixValue,
                             username = username
                         )
 
-                        viewModelReserv.createReservation(reservation) { isSuccess ->
-                            if (isSuccess) {
-                                // Reservation created successfully
-                                Toast.makeText(context, "Reservation created successfully", Toast.LENGTH_SHORT).show()
-                                viewModelPlac.reservePlace(randomPlaceId!!)
-                            } else {
-                                // Failed to create reservation
-                                Toast.makeText(context, "Failed to create reservation", Toast.LENGTH_SHORT).show()
-                            }
-                        }
+                        viewModelReserv.createReservation(
+                            idParking = parkingId,
+                            idPlace = randomPlaceId!!,
+                            date = date,
+                            heureEntree = heureEntr,
+                            heureSortie = heureSort,
+                            prix = prixValue,
+                            codeQr = "${newReservation.id_place}:${newReservation.date}:${newReservation.prix}", // Placeholder, will be set later
+                            username = username
+                        )
+                        codeQrr = "${newReservation.id_place}:${newReservation.date}:${newReservation.prix}"
+                        reservation = newReservation
+                        showDialog = true
                     }
                 },
                 enabled = date.isNotBlank() && heureEntr.isNotBlank() && heureSort.isNotBlank() && randomPlaceId != null
@@ -119,57 +146,106 @@ fun DisplayReservation(
                 Text(text = "Book Parking")
             }
 
-            // Display the fetched random place ID
-            if (randomPlaceId != null) {
-                Text(text = "Random Place ID: $randomPlaceId", modifier = Modifier.padding(vertical = 16.dp))
-            }
+//            if (reservation != null) {
+//                DisplayQRCode(reservation!!.codeQr)
+//            }
 
-            // Button to fetch a new random place ID
-            Button(
-                onClick = {
-                    if (parkingId != null) {
-                        fetchRandomPlaceId(parkingId)
-                    }
-                },
-                modifier = Modifier.padding(vertical = 16.dp)
-            ) {
-                Text(text = "Fetch Random Place ID")
-            }
+
         }
 
-
-    }
-    else {
+        // Dialog box to display reservation details
+        if (showDialog ) {
+            ReservationConfirmationDialog(reservation = reservation!!,codeQr = codeQrr, onDismiss = { showDialog = false })
+        }
+    } else {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ){
-            Text(
-                text = "Please log in to view ur reservations.",
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxSize()
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.noo), // Replace with your image resource
+                contentDescription = null,
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
+                    .size(200.dp) // Adjust size as needed
+                    .padding(bottom = 16.dp)
+            )
+            Text(
+                text = "You are not authenticated",
+                style = TextStyle(
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp
+                ),
+                modifier = Modifier.padding(bottom = 16.dp)
             )
             Button(
-                onClick = { navHostController.navigate(Routes.Login.route) },
-
-                colors = ButtonDefaults.buttonColors(Color(0xFFFF5722)),
+                onClick = {
+                    navController.navigate(Routes.Login.route)
+                },
+                colors = ButtonDefaults.buttonColors(Color(0xFFA0D7FC)),
                 modifier = Modifier
+                    .padding(horizontal = 16.dp)
                     .fillMaxWidth()
-                    .padding(vertical = 12.dp)
             ) {
-                Text("Log In")
+                Text(text = "Sign In")
             }
-
         }
-
-
-
     }
-
-
-
 }
+
+@Composable
+fun DisplayQRCode(data: String) {
+    Box(
+        modifier = Modifier
+            .size(200.dp)
+            .background(Color.White),
+        contentAlignment = Alignment.Center
+    ) {
+        QrCodeView(
+            data = data,
+            modifier = Modifier.size(200.dp),
+            colors = QrCodeColors(
+                background = Color.White,
+                foreground = Color.Black
+            ),
+            dotShape = DotShape.Square,
+        )
+    }
+}
+
+
+
+@Composable
+fun ReservationConfirmationDialog(reservation: Reservation, codeQr: String, onDismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text(
+                text = "Reservation Confirmation",
+                style = TextStyle(fontWeight = FontWeight.Bold)
+            )
+        },
+        text = {
+            Column {
+                Text("Parking ID: ${reservation.id_place}")
+                Text("Username: ${reservation.username}")
+                DisplayQRCode(codeQr)
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = onDismiss
+            ) {
+                Text("Close")
+            }
+        }
+    )
+}
+
+
+
+
+
 
 
 fun calculatePrice(heureEntree: String, heureSortie: String, parkingTariff: Double): Double {
