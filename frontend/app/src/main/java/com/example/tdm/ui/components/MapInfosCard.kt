@@ -3,7 +3,6 @@ package com.example.tdm.ui.components
 import Routes
 import android.content.Context
 import android.graphics.Bitmap
-import android.os.Build
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -18,6 +17,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,11 +30,9 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import coil.ImageLoader
-import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.request.CachePolicy
-import coil.util.CoilUtils
 import com.example.tdm.URL
 import com.example.tdm.data.models.Parking
 import com.google.android.gms.maps.model.BitmapDescriptor
@@ -42,8 +40,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
-import okhttp3.Cache
-import okhttp3.OkHttpClient
 
 @Composable
 fun ParkingInfoCard(
@@ -62,21 +58,16 @@ fun ParkingInfoCard(
         .respectCacheHeaders(false).build()
 
     val imageRequest = ImageRequest.Builder(context)
-        .data(URL+imageUrl)
+        .data(URL + imageUrl)
         .diskCachePolicy(CachePolicy.ENABLED)
         .memoryCachePolicy(CachePolicy.ENABLED)
         .build()
 
     Box(
         modifier = Modifier
-
             .padding(16.dp)
             .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(16.dp))
             .fillMaxWidth()
-            .clickable {
-                println("im clicking on window : " + parkingId.toString())
-                navController.navigate(Routes.ParkingDetails.createRoute(parkingId))
-            }
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -85,8 +76,7 @@ fun ParkingInfoCard(
         ) {
 
             Image(
-                painter =
-                rememberAsyncImagePainter(imageRequest,imageLoader),
+                painter = rememberAsyncImagePainter(imageRequest, imageLoader),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -118,12 +108,17 @@ fun ParkingInfoCard(
                     )
                 }
                 Text(
-                    text = price + "DA/hour",
+                    text = "$price DA/hour",
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.primary
                 )
             }
             Spacer(modifier = Modifier.width(8.dp))
+            Button(onClick = {
+                navController.navigate(Routes.ParkingDetails.createRoute(parkingId))
+            }) {
+                Text(text = "See Details")
+            }
         }
     }
 }

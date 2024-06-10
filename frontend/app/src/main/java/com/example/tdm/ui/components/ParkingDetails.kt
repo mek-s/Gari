@@ -19,12 +19,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.outlined.LocationOn
+import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -49,25 +52,27 @@ import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import coil.request.CachePolicy
 import coil.request.ImageRequest
+import com.example.tdm.R
 import com.example.tdm.URL
 import com.example.tdm.ui.theme.black
 import com.example.tdm.ui.theme.blueBackground
 import com.example.tdm.ui.theme.darkBlue
 import com.example.tdm.ui.theme.lightBlue
 import com.example.tdm.ui.theme.lightGrey
+import com.example.tdm.ui.theme.orange
+
 @Composable
 fun ParkingDetails(navController: NavHostController, parking: Parking?) {
     val imageLoader = ImageLoader.Builder(LocalContext.current)
         .respectCacheHeaders(false).build()
     val imageRequest =  ImageRequest.Builder(LocalContext.current)
-        .data(URL+ (parking?.image ?: ""))
+        .data(URL + (parking?.image ?: ""))
         .diskCachePolicy(CachePolicy.ENABLED)
         .memoryCachePolicy(CachePolicy.ENABLED)
         .build()
 
     if (parking != null) {
         Column(
-
             modifier = Modifier
                 .verticalScroll(enabled = true, state = ScrollState(0))
                 .padding(8.dp)
@@ -97,85 +102,103 @@ fun ParkingDetails(navController: NavHostController, parking: Parking?) {
                         tint = darkBlue
                     )
                 }
-
+                Spacer(modifier = Modifier.padding(8.dp))
+                Text(text = "Parking Details", fontWeight = FontWeight.Bold, fontSize = 20.sp)
             }
 
-            Row(
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 10.dp)
+                    .height(200.dp)
+                    .padding(8.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(Color.LightGray)
             ) {
-
-
-                    Image(
-                        painter =
-                        rememberAsyncImagePainter(imageRequest,imageLoader),
-                        contentDescription = null,
-                        contentScale = ContentScale.FillWidth,
-                        modifier = Modifier
-                            .height(500.dp)
-                            .fillMaxWidth()
-                            .padding(8.dp)
-                            .aspectRatio(1f)
-                            .clip(RoundedCornerShape(25.dp))
-                    )
-
+                AsyncImage(
+                    model = imageRequest,
+                    contentDescription = "Parking Image",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize()
+                )
             }
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(20.dp)
-            ) {
+            Text(
+                text = parking.name,
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(top = 8.dp)
+            )
 
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = parking.name,
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(start = 8.dp)
-                    )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(top = 4.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.LocationOn,
+                    contentDescription = "Location Icon",
+                    tint = darkBlue,
+                    modifier = Modifier.size(20.dp)
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(
+                    text = parking.commune,
+                    fontSize = 16.sp,
+                    color = lightGrey
+                )
+                Spacer(modifier = Modifier.width(200.dp))
+                Text(
+                    text = parking.tarif.toString()+" DA/H",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = orange
+                )
+            }
+
+            // Review Stars
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(top = 8.dp)
+            ) {
+                repeat(5) { index ->
                     Icon(
-                        imageVector = Icons.Outlined.LocationOn,
-                        contentDescription = "Map Icon",
-                        tint = darkBlue
-                    )
-                    Text(
-                        text = parking.commune,
-                        fontSize = 11.sp,
-                        color = lightGrey,
-                        modifier = Modifier.padding(start = 4.dp)
+                        imageVector = Icons.Rounded.Star,
+                        contentDescription = "Star Icon",
+                        tint = if (index < 5) Color.Yellow else Color.Gray,
+                        modifier = Modifier.size(20.dp)
                     )
                 }
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(
+                    text = "3.5",
+                    fontSize = 16.sp,
+                    color = lightGrey
+                )
             }
 
-            Row {
-                Text(text = "Singapour, une cité-État insulaire située au large de la péninsule malaise, est un carrefour multiculturel dynamique. Son économie florissante, son infrastructure moderne et sa population diversifiée, composée de communautés chinoises, malaises, indiennes et eurasiennes, lui confèrent une identité unique. La ville offre un mélange harmonieux de gratte-ciel futuristes, de temples majestueux, de quartiers historiques et de parcs luxuriants. ")
-            }
+            Text(
+                text = "CC TV, Hydraulic Parking, Power Charging System, Security, Automated Ticket, Parking Assistant",
+                fontSize = 14.sp,
+                modifier = Modifier.padding(top = 8.dp)
+            )
+
             Row(
-                horizontalArrangement = Arrangement.End,
+                horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier
-                    .padding(top = 50.dp)
-                    .fillMaxWidth(1f)
+                    .fillMaxWidth()
+                    .padding(top = 16.dp)
             ) {
+
                 Button(
                     onClick = {
                         navController.navigate(Routes.Reserv.createRoute(parking.idParking))
-
                     },
                     colors = ButtonDefaults.buttonColors(darkBlue),
                     shape = RoundedCornerShape(10.dp),
-                    modifier = Modifier
-                        .padding(top = 50.dp)
-
+                    modifier = Modifier.height(48.dp)
                 ) {
                     Text(text = "Book a place")
                 }
             }
         }
-
-
     }
 }
