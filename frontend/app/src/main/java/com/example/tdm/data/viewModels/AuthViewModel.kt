@@ -12,6 +12,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 
 class AuthViewModel(
     private val sharedPreferencesManager: SharedPreferencesManager,
@@ -25,30 +27,7 @@ class AuthViewModel(
     private val _loginError = MutableStateFlow<String?>(null)
     val loginError = _loginError.asStateFlow()
 
-    fun authenticate(username: String, password: String, callback: (String?) -> Unit) {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                try {
-                    val response = userRepository.login(username, password)
-
-
-                    if (response.isSuccessful) {
-                        val loggedInUsername = response.body()
-                        if (!loggedInUsername.isNullOrEmpty()) {
-                            callback(loggedInUsername)
-                            return@withContext // Return early if the username is not null or empty
-                        }
-                    }
-
-                    // If the response is successful but the username is null or empty, or if the response is not successful
-                    callback(null)
-                } catch (e: Exception) {
-                    callback(null)
-                }
-            }
-        }
-    }
-    fun login(username: String, password: String) {
+     fun login(username: String, password: String) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 try {
@@ -73,6 +52,26 @@ class AuthViewModel(
                 }
             }
         }
+    }
+
+    fun authenticateWithGoogle(idToken: String, callback: (Boolean) -> Unit) {
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        FirebaseAuth.getInstance().signInWithCredential(credential)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val user = task.result?.user
+                    if (user != null) {
+                        this.user.value = user.displayName
+                        sharedPreferencesManager.setLocalUsername(user.displayName ?: "")
+                        sharedPreferencesManager.setLoggedIn(true)
+                        callback(true)
+                    } else {
+                        callback(false)
+                    }
+                } else {
+                    callback(false)
+                }
+            }
     }
 
 

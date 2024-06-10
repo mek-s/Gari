@@ -14,6 +14,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.tdm.data.viewModels.ParkingModel
 import com.example.tdm.ui.components.ParkingDetails
@@ -22,6 +23,7 @@ import androidx.navigation.NavHostController
 import com.example.tdm.data.models.Parking
 import com.example.tdm.ui.components.FilterBar
 import com.example.tdm.ui.components.SearchBar
+
 
 @Composable
 fun DisplayHome(navController : NavHostController, parkingModel: ParkingModel) {
@@ -51,6 +53,8 @@ fun DisplayHome(navController : NavHostController, parkingModel: ParkingModel) {
                 filteredParkings = filterAndSearchParkings(query, selectedCommune, parkingModel)
             }
         )
+
+
 
         Spacer(modifier = Modifier.height(8.dp))
 
