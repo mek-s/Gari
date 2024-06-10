@@ -1,5 +1,6 @@
 package com.example.TDM.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 @Entity
@@ -16,8 +17,10 @@ public class Place {
             strategy = GenerationType.SEQUENCE,
             generator = "place_sequence"
     )
+    @JsonProperty("id_place")
     @Column(name = "id_place")
     private Integer id_place ;
+
     @Column(name = "reservee")
     private Boolean reservee;
 
@@ -29,5 +32,15 @@ public class Place {
         return reservee;
     }
 
+    public Integer getId_place() {
+        return id_place;
+    }
 
+    public Boolean getReservee() {
+        return reservee;
+    }
+
+    public Integer getParking() {
+        return parking;
+    }
 }

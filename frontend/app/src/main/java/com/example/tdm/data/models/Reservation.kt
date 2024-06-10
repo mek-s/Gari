@@ -1,5 +1,6 @@
 package com.example.tdm.data.models
 
+import androidx.annotation.StringDef
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.Date
@@ -7,12 +8,14 @@ import java.util.Date
 @Entity(tableName = "reservation")
 data class Reservation(
     @PrimaryKey
-    val idReservation: String,
-    val idPlace: String, // Assuming FK stands for Foreign Key
-    val date: Date,
-    val heureEntree: String,
-    val heureSortie: String,
-    val codeQR: String,
+    val id_reservation: Int,
+    val id_place: Int,
+    val date: String,
+    val heure_entree: String,
+    val heure_sortie: String,
+    val code_qr: String,
     val prix: Double,
-    val validite: Boolean
+    val username:String
+
 )
+

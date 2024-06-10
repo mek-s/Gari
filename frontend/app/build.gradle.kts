@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp") version "1.9.21-1.0.15"
+
 }
 
 android {
@@ -77,7 +78,6 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.6.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.6.0")
     implementation ("com.google.code.gson:gson:2.8.5")
-    implementation("io.coil-kt:coil-compose:2.4.0")
     testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.2")
     implementation ("com.google.maps.android:maps-compose:2.11.4")
     implementation ("com.google.android.gms:play-services-maps:18.1.0")
@@ -91,9 +91,15 @@ dependencies {
     testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.2")
     //MockWebserver
     testImplementation ("com.squareup.okhttp3:mockwebserver:4.9.1")
+
     //Google maps
     implementation ("com.google.maps.android:maps-compose:1.0.0")
     implementation ("com.google.android.gms:play-services-maps:18.0.2")
+
+    //get location
+    implementation("com.google.android.gms:play-services-location:21.1.0")
+    implementation("com.google.accompanist:accompanist-permissions:0.35.0-alpha")
+
 
 
 }

@@ -13,7 +13,7 @@ import com.example.tdm.data.dao.ParkingDao
 import com.example.tdm.data.dao.PlaceDao
 import com.example.tdm.data.dao.ReservationDao
 import com.example.tdm.data.dao.UserDao
-@Database(entities = [Parking::class ,Place::class, Reservation::class , User::class ], version = 3)
+@Database(entities = [Parking::class ,Place::class, Reservation::class , User::class ], version = 4)
 @TypeConverters(Converters::class)
 abstract class database : RoomDatabase() {
     abstract fun getParkingDao(): ParkingDao

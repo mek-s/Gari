@@ -16,5 +16,8 @@ interface ParkingDao {
      @Query("SELECT * FROM parking WHERE idParking =:id")
      fun getParkingById(id :Int) : Parking
 
+    @Query("SELECT tarif FROM parking WHERE idParking = :id")
+    fun getParkingTariffById(id: Int): Double
+
 
 }

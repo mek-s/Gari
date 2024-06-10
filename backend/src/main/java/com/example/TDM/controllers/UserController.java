@@ -19,13 +19,26 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestBody User user) {
-        boolean loginSuccessful = userService.login(user.getUsername(), user.getPassword());
+    public ResponseEntity<String> loginUser(@RequestParam("username") String username, @RequestParam("password") String password) {
+        boolean loginSuccessful = userService.login(username, password);
         if (loginSuccessful) {
-            return ResponseEntity.ok("Login successful. Username: " + user.getUsername());
+            // Return just the username upon successful login
+            return ResponseEntity.ok().body(username);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login failed");
         }
     }
+    @PostMapping("/register")
+    public ResponseEntity<String> registerUser(@RequestBody User user) {
+        String username = userService.createUser(user);
+        if (username != null) {
+            return ResponseEntity.ok().body(username);
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create user");
+        }
+    }
+
+
+
 
 }

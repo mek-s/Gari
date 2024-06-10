@@ -2,9 +2,6 @@ package com.example.TDM.models;
 
 import jakarta.persistence.*;
 
-import java.sql.Time;
-import java.util.Date;
-
 @Entity
 @Table(name = "reservation")
 public class Reservation {
@@ -13,40 +10,45 @@ public class Reservation {
     @Column(name = "id_reservation")
     private Integer id_reservation;
 
-
-
     @Column(name = "id_place")
     private Integer id_place;
 
     @Column(name = "date")
-    private Date date;
+    private String date;
 
     @Column(name = "heure_entree")
-    private Time heure_entree; // Changed data type to Time
+    private String heure_entree;
 
     @Column(name = "heure_sortie")
-    private Time heure_sortie; // Changed data type to Time
+    private String heure_sortie;
 
     @Column(name = "code_qr")
-    private String code_qr; // Changed data type to String
+    private String code_qr;
 
     @Column(name = "prix")
     private Double prix;
 
+    @Column(name = "username")
+    private String username;
+
+
+    public String getUsername() {
+        return username;
+    }
 
     public Integer getId_place() {
         return id_place;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public Time getHeure_entree() {
+    public String getHeure_entree() {
         return heure_entree;
     }
 
-    public Time getHeure_sortie() {
+    public String getHeure_sortie() {
         return heure_sortie;
     }
 

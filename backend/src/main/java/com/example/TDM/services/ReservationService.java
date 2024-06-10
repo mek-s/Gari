@@ -5,6 +5,8 @@ import com.example.TDM.repositories.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ReservationService {
 
@@ -16,7 +18,10 @@ public class ReservationService {
     }
 
     public Reservation createReservation(Reservation reservation) {
-        // Add any additional logic here before saving the reservation
         return reservationRepository.save(reservation);
+    }
+
+    public List<Reservation> getReservationsByUsername(String username) {
+        return reservationRepository.findByUsername(username);
     }
 }

@@ -4,7 +4,6 @@ package com.example.tdm.ui.components
 import Routes
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -15,6 +14,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -40,13 +40,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import coil.ImageLoader
 import coil.compose.AsyncImage
-import coil.compose.rememberAsyncImagePainter
-import coil.request.CachePolicy
-import coil.request.ImageRequest
 import com.example.tdm.URL
 import com.example.tdm.data.models.Parking
+import com.example.tdm.data.models.Reservation
 import com.example.tdm.ui.theme.black
 import com.example.tdm.ui.theme.darkBlue
 import com.example.tdm.ui.theme.lightBlue
@@ -56,24 +53,22 @@ import com.example.tdm.ui.theme.white
 
 
 @Composable
-fun ParkingsList( navController : NavHostController ,parkings: List<Parking>) {
-    val imageLoader = ImageLoader.Builder(LocalContext.current)
-        .respectCacheHeaders(false).build()
-
-
+fun ReservationList(navController: NavHostController, reservations: List<Reservation>) {
     Column(
         horizontalAlignment = Alignment.Start,
         modifier = Modifier.padding(15.dp)
     ) {
         Text(
-            text = "Parking List", fontWeight = FontWeight.Bold,
+            text = "Reservation List",
+            fontWeight = FontWeight.Bold,
             fontFamily = FontFamily.SansSerif,
-            fontSize = 20.sp, color = darkBlue
+            fontSize = 20.sp,
+            color = darkBlue
         )
+        Spacer(Modifier.width(10.dp))
 
         LazyColumn(Modifier.height(1000.dp)) {
-
-            items(parkings) { parking ->
+            items(reservations) { reservation ->
                 Row(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically,
@@ -81,64 +76,40 @@ fun ParkingsList( navController : NavHostController ,parkings: List<Parking>) {
                         .clip(RoundedCornerShape(4.dp))
                         .padding(4.dp)
                         .clickable {
-                            navController.navigate(Routes.ParkingDetails.createRoute(parking.idParking))
+                            // Handle click action, if any
                         }
                 ) {
                     Column(
-
                         modifier = Modifier.weight(2f)
                     ) {
-                        Image(
-                            painter =
-                            rememberAsyncImagePainter(ImageRequest.Builder(LocalContext.current)
-                                .data(URL+parking.image)
-                                .diskCachePolicy(CachePolicy.ENABLED)
-                                .memoryCachePolicy(CachePolicy.ENABLED)
-                                .build(),imageLoader),
-                            contentDescription = null,
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier
-                                .height(150.dp)
-                                .aspectRatio(1f)
-                                .padding(8.dp)
-                                .clip(RoundedCornerShape(25.dp))
+                        // Adjust the content as per your reservation model
+                        Text(
+                            text = "Reservation ID: ${reservation.id_reservation}",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 18.sp,
+                            color = black
+                        )
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = "Date: ${reservation.date}",
+                            fontSize = 14.sp,
+                            color = lightGrey
+                        )
+                        Text(
+                            text = "Place ID: ${reservation.id_place}",
+                            fontSize = 14.sp,
+                            color = lightGrey
                         )
                     }
                     Column(
                         horizontalAlignment = Alignment.Start,
                         verticalArrangement = Arrangement.Center,
                         modifier = Modifier.weight(2f)
-                    ){
-                        Text(
-                            text = parking.name, fontWeight = FontWeight.Bold,
-                            fontSize = 20.sp, color = black
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Row (
-                            verticalAlignment = Alignment.CenterVertically
-                        ){
-                            Icon(
-                                imageVector = Icons.Outlined.LocationOn,
-                                contentDescription = "Map Icon",
-                                tint = lightGrey
-                            )
-                            Text(
-                                text = parking.commune,
-                                fontSize = 11.sp, color = lightGrey
-                            )
-                        }
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Row {
+                    ) {
 
-
-                        Text(text = parking.tarif.toString() + " DA" , fontWeight = FontWeight.Bold, fontFamily = FontFamily.SansSerif, color = orange)
-                        Text(text = "/ hr", color = lightGrey)
-                    }
                     }
                 }
             }
-
         }
     }
-
 }

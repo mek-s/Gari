@@ -17,6 +17,7 @@ class ParkingModel(private val parkingRepository: ParkingRepository) : ViewModel
     var loading = mutableStateOf(false)
     var displayMsg = mutableStateOf(false)
 
+
     fun getAllParkings() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
@@ -71,6 +72,7 @@ class ParkingModel(private val parkingRepository: ParkingRepository) : ViewModel
         }
     }
 
+
     fun saveParking(parking: Parking){
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
@@ -89,6 +91,26 @@ class ParkingModel(private val parkingRepository: ParkingRepository) : ViewModel
         }
     }
 
+    var parkingTariff = mutableStateOf(0.0)
+
+    fun getParkingTariffById(id: Int, callback: (Double?) -> Unit) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                try {
+                    val response = parkingRepository.getParkingTariffById(id)
+                    if (response.isSuccessful) {
+                        callback(response.body())
+                    } else {
+                        callback(null)
+                        Log.e("ParkingModel", "Failed to fetch parking tariff: ${response.message()}")
+                    }
+                } catch (e: Exception) {
+                    callback(null)
+                    Log.e("ParkingModel", "Exception: ${e.message}")
+                }
+            }
+        }
+    }
     class Factory(private val parkingRepository: ParkingRepository) :
         ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {

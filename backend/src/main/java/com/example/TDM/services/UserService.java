@@ -23,4 +23,9 @@ public class UserService {
             return false;
         }
     }
+
+    public String createUser(User user) {
+        userRepository.save(user);
+        return user.getUsername();
+    }
 }
