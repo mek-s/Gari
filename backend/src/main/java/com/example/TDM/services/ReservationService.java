@@ -1,6 +1,8 @@
 package com.example.TDM.services;
 
+import com.example.TDM.models.Place;
 import com.example.TDM.models.Reservation;
+import com.example.TDM.repositories.PlaceRepository;
 import com.example.TDM.repositories.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,13 +14,18 @@ import java.util.Optional;
 public class ReservationService {
 
     private final ReservationRepository reservationRepository;
+    private final PlaceRepository placeRepository;
 
     @Autowired
-    public ReservationService(ReservationRepository reservationRepository) {
+    public ReservationService(ReservationRepository reservationRepository , PlaceRepository placeRepository) {
         this.reservationRepository = reservationRepository;
+        this.placeRepository= placeRepository;
     }
 
     public Reservation createReservation(Reservation reservation) {
+
+        Place place = placeRepository.getReferenceById(reservation.getId_place());
+        place.setReservee(true);
         return reservationRepository.save(reservation);
     }
 

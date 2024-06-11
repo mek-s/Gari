@@ -34,16 +34,13 @@ public class PlaceController {
         return this.placeService.getParkingPlaces(id);
     }
 
-    @GetMapping("/unreserved/random/{parkingId}")
-    public Integer getRandomUnreservedPlaceId(@PathVariable Integer parkingId) {
+    @GetMapping("/available/{parkingId}")
+    public List<Place> getAvailablePlaces(@PathVariable Integer parkingId) {
         List<Place> unreservedPlaces = this.placeService.getUnreservedPlacesForParking(parkingId);
 
         if (!unreservedPlaces.isEmpty()) {
-            Random random = new Random();
-            int randomIndex = random.nextInt(unreservedPlaces.size());
-            return unreservedPlaces.get(randomIndex).getId_place();
+            return unreservedPlaces;
         } else {
-
             return null;
         }
     }

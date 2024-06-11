@@ -36,8 +36,8 @@ public class Place {
         return id_place;
     }
 
-    public Boolean getReservee() {
-        return reservee;
+    public void setReservee(Boolean res) {
+      this.reservee = res;
     }
 
     public Integer getParking() {
