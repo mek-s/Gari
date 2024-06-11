@@ -28,6 +28,17 @@ public class Parking {
     @Column(name = "commune")
     private String commune;
 
+    public String getAdresse() {
+        return adresse;
+    }
+
+    public void setAdresse(String adresse) {
+        this.adresse = adresse;
+    }
+
+    @Column(name = "adresse")
+    private String adresse;
+
     @Column(name = "nb_places")
 
     private Integer  nb_places;
