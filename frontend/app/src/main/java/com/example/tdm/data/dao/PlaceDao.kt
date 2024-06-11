@@ -11,7 +11,7 @@ interface PlaceDao {
      fun getAllPlaces(): List<Place>
 
 
-    @Query("SELECT * FROM place WHERE reservee = 0 AND id_parking = :parkingId ORDER BY RANDOM() LIMIT 1")
+    @Query("SELECT * FROM place WHERE reservee = 0 AND idParking = :parkingId ORDER BY RANDOM() LIMIT 1")
     fun getRandomUnreservedPlaceForParking( parkingId: Int): Place?
 
 

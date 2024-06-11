@@ -1,4 +1,5 @@
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
@@ -93,6 +94,7 @@ fun NavigationMenu(
             composable(Routes.Profile.route) {
               DisplayMyProfile(navController = navController, sharedPreferencesManager = sh, viewModel = authViewModel)
             }
+
             composable(Routes.Reserv.route) {
                 val parkingId = it.arguments?.getString("parkingId")?.toInt()
 
@@ -109,6 +111,8 @@ fun NavigationMenu(
                             navController = navController
                         )
                     }
+                }else{
+                    Toast.makeText(context, "Login first to create reservation", Toast.LENGTH_LONG).show()
                 }
             }
 
@@ -118,6 +122,8 @@ fun NavigationMenu(
                 val parkingId = it.arguments?.getString("parkingId")?.toInt()
                 DisplayParkingDetails(navController,parkingModel , parkingId)
             }
+
+
             composable(Routes.Login.route) {
                 DisplayLogin(authViewModel, navController)
             }

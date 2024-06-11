@@ -9,5 +9,5 @@ data class Place(
     @PrimaryKey
     val id_place: Integer,
     val reservee: Integer,
-    val id_parking: String
+    val idParking: String
 )

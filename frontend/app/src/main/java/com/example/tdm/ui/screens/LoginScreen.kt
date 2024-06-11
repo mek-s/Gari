@@ -1,8 +1,5 @@
 
-
-
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,8 +8,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,17 +23,15 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.*
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.compose.material3.MaterialTheme
 import android.widget.Toast
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.ui.platform.LocalContext
-
-
+import com.example.tdm.MainActivity
 import com.example.tdm.R
-
-
 
 @Composable
 fun DisplayLogin(viewModel: AuthViewModel, navHostController: NavHostController) {
@@ -45,13 +40,13 @@ fun DisplayLogin(viewModel: AuthViewModel, navHostController: NavHostController)
     var errorMessage by remember { mutableStateOf("") }
     var isLoggedIn = remember { mutableStateOf(false) }
     var currentUsername by remember { mutableStateOf<String?>(null) }
+    val context = LocalContext.current
 
     currentUsername = viewModel.user.value
     if (!currentUsername.isNullOrEmpty()) {
-        LaunchedEffect(Unit ){
+        LaunchedEffect(Unit) {
             navHostController.navigate(Routes.Home.route)
         }
-
     }
 
     if (isLoggedIn.value) {
@@ -88,7 +83,7 @@ fun DisplayLogin(viewModel: AuthViewModel, navHostController: NavHostController)
 
             Button(
                 onClick = {
-                    // Handle Google login
+                   (context as MainActivity).triggerSignIn()
                 },
                 colors = ButtonDefaults.buttonColors(Color(0xFFFFFFFF)),
                 modifier = Modifier
@@ -111,14 +106,14 @@ fun DisplayLogin(viewModel: AuthViewModel, navHostController: NavHostController)
             Button(
                 onClick = {
                     viewModel.login(username, password)
+
+
                 },
                 enabled = username.isNotBlank() && password.isNotBlank()
             ) {
                 Text("Login")
             }
-            Text(text = "Logged in as: ${viewModel.user.value}")
-
-            Spacer(modifier = Modifier.height(10.dp))
+           Spacer(modifier = Modifier.height(10.dp))
 
             Button(
                 onClick = {

@@ -58,7 +58,5 @@ abstract class database : RoomDatabase() {
 
 
     }
-    }
-
-
+}
 
