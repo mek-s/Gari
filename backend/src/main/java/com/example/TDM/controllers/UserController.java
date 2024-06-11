@@ -37,7 +37,16 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create user");
         }
     }
-
+    @GetMapping("/getUserByEmail/{email}")
+    public  ResponseEntity<User> getUserByEmail(@PathVariable("email") String email){
+        User user = userService.getUserByEmail(email);
+        if (user != null) {
+            System.out.println(user.getUsername());
+            return ResponseEntity.ok().body(user);
+        }else {
+            return ResponseEntity.notFound().build();
+        }
+    }
     @PutMapping("/update-info/{username}")
     public ResponseEntity<String> updateUserInformation(@PathVariable("username") String username, @RequestBody User user) {
         boolean updated = userService.updateUserInformation(username, user);

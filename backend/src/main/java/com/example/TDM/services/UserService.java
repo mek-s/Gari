@@ -24,6 +24,10 @@ public class UserService {
         }
     }
 
+    public  User getUserByEmail(String email){
+        return userRepository.findByEmail(email);
+    }
+
     public boolean updateUserInformation(String username, User updatedUser) {
         User existingUser = userRepository.findByUsername(username);
         if (existingUser != null) {

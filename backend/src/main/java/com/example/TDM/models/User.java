@@ -13,6 +13,9 @@ public class User {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "email")
+    private String email;
+
 
     @Column(name = "nom")
     private String nom;
@@ -35,6 +38,14 @@ public class User {
         this.nom = nom;
         this.prenom = prenom;
         this.photo = photo;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     // Getters and setters
