@@ -1,4 +1,5 @@
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
@@ -86,28 +87,32 @@ fun NavigationMenu(
             }
         },
     ) {
-        NavHost(
-            navController = navController,
-            startDestination = Routes.Home.route ,
-            modifier = Modifier.padding(it)) {
+        NavHost(navController = navController, startDestination = Routes.Home.route, modifier = Modifier.padding(it)) {
             composable(Routes.Home.route) {  DisplayHome(navController ,parkingModel) }
-            composable(Routes.Map.route) { DisplayMap(navController,parkingModel) }
+            composable(Routes.Map.route) {  }
 
             composable(Routes.Profile.route) {
-                if (LocalUsername != null) {
-                    DisplayMyProfile(
-                        isLoggedIn = isLoggedIn,
-                        LocalUsername = LocalUsername,
-                        viewModel = authViewModel,
-                        navHostController = navController
-                    )
-                }
+              DisplayMyProfile(navController = navController, sharedPreferencesManager = sh, viewModel = authViewModel)
             }
-            composable(Routes.Reserv.route)
-            {
+
+            composable(Routes.Reserv.route) {
                 val parkingId = it.arguments?.getString("parkingId")?.toInt()
-                if (LocalUsername != null) {
-                    DisplayReservation(parkingId,isLoggedIn, LocalUsername, reservationModel, parkingModel, placeModel, navController )
+
+                // Ensure user is logged in before displaying reservation screen
+                if (isLoggedIn) {
+                    if (parkingId != null) {
+                        DisplayReservation(
+                            parkingId = parkingId,
+                            isLoggedIn = isLoggedIn,
+                            username = LocalUsername ?: "",
+                            viewModelReserv = reservationModel,
+                            viewModelPark = parkingModel,
+                            viewModelPlac = placeModel,
+                            navController = navController
+                        )
+                    }
+                }else{
+                    Toast.makeText(context, "Login first to create reservation", Toast.LENGTH_LONG).show()
                 }
             }
 
@@ -117,16 +122,38 @@ fun NavigationMenu(
                 val parkingId = it.arguments?.getString("parkingId")?.toInt()
                 DisplayParkingDetails(navController,parkingModel , parkingId)
             }
+
+
             composable(Routes.Login.route) {
                 DisplayLogin(authViewModel, navController)
             }
 
-
-            composable(Routes.MyReserv.route) {
-
-                if (LocalUsername != null) {
-                    DisplayMyReservations(isLoggedIn = isLoggedIn, username  = LocalUsername,  viewModel = authViewModel, navHostController = navController, viewModelReserv = reservationModel )
+            composable(Routes.ReservationDetails.route) {
+                val ResId = it.arguments?.getString("reservationId")?.toInt()
+                if (ResId != null) {
+                    ReservationDetails(ResId, reservationModel, parkingModel)
                 }
+            }
+            composable(Routes.MyReserv.route) {
+                val sharedPreferencesManager = SharedPreferencesManager(LocalContext.current)
+                val isLoggedIn = sharedPreferencesManager.isLoggedIn()
+                val username = sharedPreferencesManager.getLocalUsername() ?: ""
+                DisplayMyReservations(
+                    isLoggedIn = isLoggedIn,
+                    username = username,
+                    viewModelReserv = reservationModel,
+                    navHostController = navController
+                )
+            }
+
+
+            composable(Routes.Notification.route) { NotificationScreen() }
+            composable(Routes.Security.route){
+                SecurityScreen(userModel = authViewModel, navController = navController, sharedPreferencesManager = sh)
+            }
+
+            composable(Routes.InfoProfile.route){
+                InfoProfileScreen(sharedPreferencesManager = sh, userModel = authViewModel, navController = navController)
             }
 
 

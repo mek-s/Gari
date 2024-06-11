@@ -96,6 +96,9 @@ dependencies {
     //MockWebserver
     testImplementation ("com.squareup.okhttp3:mockwebserver:4.9.1")
 
+    // QR Code
+    implementation("com.lightspark:compose-qr-code:1.0.1")
+
     //Google maps
     implementation ("com.google.maps.android:maps-compose:1.0.0")
     implementation ("com.google.android.gms:play-services-maps:18.0.2")

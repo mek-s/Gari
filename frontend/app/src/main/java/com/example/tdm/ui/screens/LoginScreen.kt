@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,6 +25,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.*
 import androidx.navigation.NavHostController
 import androidx.compose.material3.MaterialTheme
+import android.widget.Toast
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.ui.platform.LocalContext
 import com.example.tdm.MainActivity
 import com.example.tdm.R
@@ -52,10 +57,8 @@ fun DisplayLogin(viewModel: AuthViewModel, navHostController: NavHostController)
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.logo),
-                contentDescription = "Logo"
-            )
+            HeaderDesign() // Display centered logo header
+
             Text(text = "Welcome Back ")
             Spacer(modifier = Modifier.height(4.dp))
             Text(text = "Login Into Your Account")
@@ -75,16 +78,43 @@ fun DisplayLogin(viewModel: AuthViewModel, navHostController: NavHostController)
                 visualTransformation = PasswordVisualTransformation()
             )
             Spacer(modifier = Modifier.height(16.dp))
+
+
+
+            Button(
+                onClick = {
+                   (context as MainActivity).triggerSignIn()
+                },
+                colors = ButtonDefaults.buttonColors(Color(0xFFFFFFFF)),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp)
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.google),
+                        contentDescription = "Google",
+                        modifier = Modifier.size(24.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("Login with Google", color = Color.Black)
+                }
+            }
+
             Button(
                 onClick = {
                     viewModel.login(username, password)
+
+
                 },
                 enabled = username.isNotBlank() && password.isNotBlank()
             ) {
                 Text("Login")
             }
+           Spacer(modifier = Modifier.height(10.dp))
 
-            Spacer(modifier = Modifier.height(10.dp))
             Button(
                 onClick = {
                     navHostController.navigate(Routes.SignUp.route)
@@ -97,26 +127,10 @@ fun DisplayLogin(viewModel: AuthViewModel, navHostController: NavHostController)
                 color = Color.Red,
                 modifier = Modifier.padding(vertical = 8.dp)
             )
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(40.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Column {
-                    Text(text = "Sign in with Google", style = MaterialTheme.typography.titleMedium)
-                    Button(
-                        onClick = {
-                            (context as MainActivity).triggerSignIn()
-                        },
-                        modifier = Modifier.padding(top = 16.dp)
-                    ) {
-                        Text(text = "Sign In")
-                    }
-                }
-            }
+            Text(
+                text = "Forgot your Password ? ",
+                modifier = Modifier.clickable { /* Handle click */ }
+            )
         }
     }
 }

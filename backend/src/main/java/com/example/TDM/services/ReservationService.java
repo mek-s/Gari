@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ReservationService {
@@ -23,5 +24,19 @@ public class ReservationService {
 
     public List<Reservation> getReservationsByUsername(String username) {
         return reservationRepository.findByUsername(username);
+    }
+
+    public Optional<Reservation> getReservationById(Integer id) {
+        return reservationRepository.findById(id);
+    }
+
+    public Reservation getReservationByQRCode(String codeQr) {
+        Optional<Reservation> optionalReservation = reservationRepository.findByCodeQr(codeQr);
+        return optionalReservation.orElse(null);
+    }
+
+    // New method to get reservations by parking ID
+    public List<Reservation> getReservationsByParkingId(Integer id_parking) {
+        return reservationRepository.findByIdParking(id_parking);
     }
 }

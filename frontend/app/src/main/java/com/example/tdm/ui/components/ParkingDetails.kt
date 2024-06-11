@@ -75,9 +75,10 @@ fun ParkingDetails(navController: NavHostController, parking: Parking?) {
         Column(
             modifier = Modifier
                 .verticalScroll(enabled = true, state = ScrollState(0))
-                .padding(8.dp)
+                .padding(10.dp)
                 .fillMaxSize()
         ) {
+
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
@@ -141,15 +142,16 @@ fun ParkingDetails(navController: NavHostController, parking: Parking?) {
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
-                    text = parking.commune,
+                    text = parking.commune +" , "+parking.adresse,
                     fontSize = 16.sp,
+                    fontWeight = FontWeight.Medium,
                     color = lightGrey
                 )
-                Spacer(modifier = Modifier.width(200.dp))
+                Spacer(modifier = Modifier.width(100.dp))
                 Text(
                     text = parking.tarif.toString()+" DA/H",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.SemiBold,
                     color = orange
                 )
             }
@@ -199,6 +201,18 @@ fun ParkingDetails(navController: NavHostController, parking: Parking?) {
                     Text(text = "Book a place")
                 }
             }
+        }
+    }
+    else {
+
+
+        Button(
+            onClick = {
+
+            },
+
+            ) {
+            Text(text = "aaaaaaaaaa")
         }
     }
 }

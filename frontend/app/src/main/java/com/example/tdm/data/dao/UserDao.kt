@@ -18,4 +18,7 @@ interface UserDao {
     @Insert
     fun insertUser(user: User)
 
+    @Query("SELECT * FROM user WHERE username = :username")
+    suspend fun getUserByUsername(username: String): User
+
 }

@@ -109,6 +109,6 @@ fun DisplayLoading(loading: Boolean) {
 fun DisplayErrorMessage(display: Boolean) {
     val context = LocalContext.current
     if (display) {
-        Toast.makeText(context, "An arror happened", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "An error happened", Toast.LENGTH_SHORT).show()
     }
 }

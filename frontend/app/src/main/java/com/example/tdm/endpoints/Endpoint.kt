@@ -34,6 +34,20 @@ interface Endpoint {
 
     @POST("user/register")
     suspend fun createUser(@Body user: User): Response<String>
+    @PUT("user//update-info/{username}")
+    suspend fun updateUserInformation(@Body user: User): Response<String>
+
+    @GET("user/{username}")
+    suspend fun getUserByUsername(@Path("username") username: String): Response<User>
+
+    @PUT("user/updatePhoto/{username}")
+    suspend fun updateUserPhoto(
+        @Query("username") username: String,
+        @Query("photoName") photoName: String
+    ): Response<String>
+
+    @PUT("user/update-password/{username}")
+    suspend fun updateUserPassword(@Query("username") username: String, @Query("newPassword") newPassword: String): Response<String>
 
     @GET("places/unreserved/random")
     suspend fun getRandomUnreservedPlaceId(): Response<Int?>
@@ -53,6 +67,10 @@ interface Endpoint {
 
     @POST("places/reserve/{id}")
     suspend fun reservePlace(@Path("id") id: Int): Response<Unit>
+
+
+    @GET("reservation/{id}")
+    suspend fun getReservationById(@Path("id") id: Int): Response<Reservation>
 
 
     companion object {

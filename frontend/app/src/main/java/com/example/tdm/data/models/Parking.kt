@@ -9,6 +9,7 @@ data class Parking(
     val idParking: Int,
     val name: String,
     val commune: String,
+    val adresse:String,
     val nb_places: Int,
     val latitude: Double,
     val longitude: Double,
