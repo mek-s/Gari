@@ -67,6 +67,7 @@ fun ReservationDetails(
 
     Column(
         verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .verticalScroll(enabled = true, state = ScrollState(0))
             .padding(10.dp)
@@ -142,30 +143,23 @@ fun ReservationDetails(
             }
         }
 
- Spacer(modifier = Modifier.width(10.dp))
-Box(
-    modifier = Modifier.size(300.dp).clip(CircleShape)
-){
+Column(
+    horizontalAlignment = Alignment.CenterHorizontally
+) {
+
+
     reservation?.let { res ->
         Text(text = "Reservation #: ${res.id_reservation}", fontSize = 18.sp)
         Text(text = "Date: ${res.date}", fontSize = 18.sp)
         Text(text = "Heure Entree: ${res.heure_entree}", fontSize = 18.sp)
         Text(text = "Heure Sortie: ${res.heure_sortie}", fontSize = 18.sp)
         Text(text = "Prix: ${res.prix}", fontSize = 18.sp)
-        parking?.let { park ->
-            Text(text = "Nom Parking: ${park.name}", fontSize = 18.sp)
-            Spacer(modifier = Modifier.height(16.dp))
-            Image(
-                painter = rememberImagePainter(park.image),
-                contentDescription = "Parking Image",
-                modifier = Modifier.size(200.dp)
-            )
-        }
         res.codeQr?.let { qrCodeData ->
             DisplayQRCode(data = qrCodeData)
         }
     }
 }
+
 
     }
 }
