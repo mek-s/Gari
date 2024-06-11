@@ -12,14 +12,31 @@ import retrofit2.http.*
 
 
 interface Endpoint {
+
+    // ---------------------------- Parking Endpoint ------------------------------//
     @GET("parkings/all")
     suspend fun getAllParkings(): Response<List<Parking>>
 
     @GET("parkings/{id}")
     suspend fun getParkingById(@Path("id") id: Int) : Response<Parking>
 
+    @GET("parkings/tarif/{id}")
+    suspend fun getParkingTariffById(@Path("id") id: Int): Response<Double>
+
+    // ---------------------------- Place Endpoint ------------------------------//
+
     @GET("places/all")
     suspend fun getAllPlaces(): Response<List<Place>>
+
+    @GET("places/unreserved/random")
+    suspend fun getRandomUnreservedPlaceId(): Response<Int?>
+
+
+    @POST("places/reserve/{id}")
+    suspend fun reservePlace(@Path("id") id: Int): Response<Unit>
+
+
+    // ---------------------------- Reservation Endpoint ------------------------------//
 
     @GET("reservations/all")
     suspend fun getAllResesrvations(): Response<List<Reservation>>
@@ -27,8 +44,18 @@ interface Endpoint {
     @GET("reservation/byUsername/{username}")
     suspend fun getReservationsByUsername(@Path("username") username: String): Response<List<Reservation>>
 
+    @GET("places/unreserved/random/{parkingId}")
+    suspend fun getRandomUnreservedPlaceId(@Path("parkingId") parkingId: Int): Response<Int?>
+
+    @POST("reservation/create")
+    suspend fun createReservation(@Body reservation: Reservation): Response<Reservation>
 
 
+    @GET("reservation/{id}")
+    suspend fun getReservationById(@Path("id") id: Int): Response<Reservation>
+
+
+    // ---------------------------- User Endpoint ------------------------------//
     @POST("user/login")
     suspend fun login(@Body requestBody: RequestBody): Response<String>
 
@@ -49,28 +76,12 @@ interface Endpoint {
     @PUT("user/update-password/{username}")
     suspend fun updateUserPassword(@Query("username") username: String, @Query("newPassword") newPassword: String): Response<String>
 
-    @GET("places/unreserved/random")
-    suspend fun getRandomUnreservedPlaceId(): Response<Int?>
+
+    @POST("user/sendToken")
+    suspend fun sendTokenToServer(@Body tokenRequest: TokenRequest): Response<Unit>
 
 
-    @GET("places/unreserved/random/{parkingId}")
-    suspend fun getRandomUnreservedPlaceId(@Path("parkingId") parkingId: Int): Response<Int?>
-
-
-    @GET("parkings/tarif/{id}")
-    suspend fun getParkingTariffById(@Path("id") id: Int): Response<Double>
-
-    @POST("reservation/create")
-    suspend fun createReservation(@Body reservation: Reservation): Response<Reservation>
-
-
-
-    @POST("places/reserve/{id}")
-    suspend fun reservePlace(@Path("id") id: Int): Response<Unit>
-
-
-    @GET("reservation/{id}")
-    suspend fun getReservationById(@Path("id") id: Int): Response<Reservation>
+    // ----------------------------------------------------------------------------------------------------//
 
 
     companion object {
@@ -90,3 +101,8 @@ interface Endpoint {
         }
     }
 }
+
+data class TokenRequest(
+    val username: String,
+    val token: String
+)

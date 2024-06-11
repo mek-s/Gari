@@ -21,7 +21,7 @@ public class Reservation {
     private String date;
 
     @Column(name = "heure_entree")
-    private String heure_entree;
+    private  String heureEntree;
 
     @Column(name = "heure_sortie")
     private String heure_sortie;
@@ -69,14 +69,13 @@ public class Reservation {
         this.date = date;
     }
 
-    public String getHeure_entree() {
-        return heure_entree;
+    public String getHeureEntree() {
+        return heureEntree;
     }
 
-    public void setHeure_entree(String heure_entree) {
-        this.heure_entree = heure_entree;
+    public void setHeureEntree(String heure_entree) {
+        this.heureEntree = heure_entree;
     }
-
     public String getHeure_sortie() {
         return heure_sortie;
     }

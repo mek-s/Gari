@@ -69,4 +69,18 @@ public class UserService {
         }
     }
 
+    public User getUserByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    public void sendTokenToServer(String username, String token) {
+        User user = userRepository.findByUsername(username);
+        if (user != null) {
+            user.setToken(token);
+            userRepository.save(user);
+        } else {
+            throw new RuntimeException("User not found");
+        }
+    }
+
 }

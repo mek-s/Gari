@@ -16,6 +16,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.messaging.FirebaseMessaging
 import java.io.File
 import java.io.FileOutputStream
 
@@ -23,6 +24,8 @@ class AuthViewModel(
     private val sharedPreferencesManager: SharedPreferencesManager,
     private val userRepository: UserRepository
 ) : ViewModel() {
+
+
 
     private val _currentUsername = MutableStateFlow("")
     val currentUsername = _currentUsername.asStateFlow()
@@ -33,6 +36,39 @@ class AuthViewModel(
 
     private val _loginError = MutableStateFlow<String?>(null)
     val loginError = _loginError.asStateFlow()
+
+    val username = sharedPreferencesManager.getLocalUsername()
+
+    init {
+        // Register for FCM token updates and send token to server when a new token is generated
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val token = task.result
+                if (!token.isNullOrEmpty()) {
+
+                    username?.let { sendTokenToServer(it, token) }
+                }
+            } else {
+                Log.e(TAG, "Fetching FCM registration token failed", task.exception)
+            }
+        }
+    }
+
+    private fun sendTokenToServer(username: String, token: String) {
+        viewModelScope.launch {
+            try {
+                userRepository.sendTokenToServer(username, token)
+                Log.d(TAG, "Token sent to server successfully")
+            } catch (e: Exception) {
+                Log.e(TAG, "Error sending token to server: ${e.message}")
+            }
+        }
+    }
+
+    companion object {
+        private const val TAG = "AuthViewModel"
+    }
+
 
     fun login(username: String, password: String) {
         viewModelScope.launch {
