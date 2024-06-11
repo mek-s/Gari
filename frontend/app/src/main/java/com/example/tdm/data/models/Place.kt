@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "place")
 data class Place(
     @PrimaryKey
-    val id_place: Integer,
-    val reservee: Integer,
+    val id_place: Int,
+    val reservee: Boolean,
     val idParking: String
 )

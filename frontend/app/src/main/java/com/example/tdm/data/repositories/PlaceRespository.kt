@@ -8,6 +8,8 @@ import retrofit2.Response
 class PlaceRespository(private val endpoint: Endpoint) {
     suspend fun getAllPlaces(): Response<List<Place>> = endpoint.getAllPlaces()
 
+    suspend fun getAvailablePlaces(parkingId: Int):Response<List<Place>> = endpoint.getAvailablePlaces(parkingId)
+
     suspend fun getRandomUnreservedPlaceId(parkingId: Int): Response<Int?> = endpoint.getRandomUnreservedPlaceId(parkingId)
 
 

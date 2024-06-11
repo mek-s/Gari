@@ -33,6 +33,7 @@ import java.util.*
 @Composable
 fun DisplayReservation(
     parkingId: Int,
+    placId : Int,
     isLoggedIn: Boolean,
     username: String,
     viewModelReserv: ReservationModel,
@@ -46,7 +47,6 @@ fun DisplayReservation(
         var heureSort by remember { mutableStateOf("") }
         var codeQrr by remember { mutableStateOf("") }
         var parkingTariff by remember { mutableStateOf(0.0) }
-        var randomPlaceId by remember { mutableStateOf<Int?>(null) }
         var reservation by remember { mutableStateOf<Reservation?>(null) }
         var showDialog by remember { mutableStateOf(false) }
 
@@ -75,20 +75,6 @@ fun DisplayReservation(
             }
         }
 
-        // Function to fetch a random place ID
-        fun fetchRandomPlaceId(parkingId: Int) {
-            viewModelPlac.randomlyAvailablePlace(parkingId) { placeId ->
-                randomPlaceId = placeId
-            }
-        }
-
-        // Fetch randomly available place when the composable is first drawn
-        LaunchedEffect(parkingId) {
-            if (parkingId != null) {
-                fetchRandomPlaceId(parkingId)
-            }
-        }
-
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
@@ -112,11 +98,11 @@ fun DisplayReservation(
             Spacer(modifier = Modifier.height(32.dp))
             Button(
                 onClick = {
-                    if (date.isNotBlank() && heureEntr.isNotBlank() && heureSort.isNotBlank() && randomPlaceId != null && parkingId != null) {
+                    if (date.isNotBlank() && heureEntr.isNotBlank() && heureSort.isNotBlank()) {
                         val prixValue = calculatePrice(heureEntr, heureSort, parkingTariff)
                         val newReservation = Reservation(
                             id_reservation = 0,
-                            id_place = randomPlaceId!!,
+                            id_place = placId,
                             idParking = parkingId,
                             date = date,
                             heure_entree = heureEntr,
@@ -128,7 +114,7 @@ fun DisplayReservation(
 
                         viewModelReserv.createReservation(
                             idParking = parkingId,
-                            idPlace = randomPlaceId!!,
+                            idPlace = placId,
                             date = date,
                             heureEntree = heureEntr,
                             heureSortie = heureSort,
@@ -141,7 +127,7 @@ fun DisplayReservation(
                         showDialog = true
                     }
                 },
-                enabled = date.isNotBlank() && heureEntr.isNotBlank() && heureSort.isNotBlank() && randomPlaceId != null
+                enabled = date.isNotBlank() && heureEntr.isNotBlank() && heureSort.isNotBlank()
             ) {
                 Text(text = "Book Parking")
             }
@@ -227,7 +213,8 @@ fun ReservationConfirmationDialog(reservation: Reservation, codeQr: String, onDi
         },
         text = {
             Column {
-                Text("Parking ID: ${reservation.id_place}")
+                Text(text = "Reservation ID: ${reservation.id_reservation}")
+                Text("Place ID: ${reservation.id_place}")
                 Text("Username: ${reservation.username}")
                 DisplayQRCode(codeQr)
             }

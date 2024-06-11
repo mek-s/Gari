@@ -16,6 +16,7 @@ import androidx.navigation.NavHostController
 import com.example.tdm.ui.components.ReservationList
 
 import androidx.compose.runtime.*
+import com.example.tdm.data.viewModels.ParkingModel
 
 
 @Composable
@@ -23,6 +24,7 @@ fun DisplayMyReservations(
     isLoggedIn: Boolean,
     username: String,
     viewModelReserv: ReservationModel,
+    parkingModel : ParkingModel,
     navHostController: NavHostController
 ) {
     if (isLoggedIn) {
@@ -35,7 +37,8 @@ fun DisplayMyReservations(
             if (viewModelReserv.allReservationss.value.isNotEmpty()) {
                 ReservationList(
                     navController = navHostController,
-                    reservations = viewModelReserv.allReservationss.value
+                    reservations = viewModelReserv.allReservationss.value,
+                    allParkings = parkingModel.allRParkings.value
                 )
 
             } else {

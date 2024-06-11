@@ -69,8 +69,8 @@ fun ParkingsList(navController: NavHostController, parkings: List<Parking>) {
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
-                        .clip(RoundedCornerShape(10.dp))
-                        .padding(8.dp)
+                        .clip(RoundedCornerShape(20.dp))
+                        .padding(10.dp)
                         .fillMaxWidth()
                         .background(Color.White)
                         .clickable {
@@ -96,7 +96,9 @@ fun ParkingsList(navController: NavHostController, parkings: List<Parking>) {
                     Column(
                         horizontalAlignment = Alignment.Start,
                         verticalArrangement = Arrangement.Center,
-                        modifier = Modifier.weight(1f).padding(start = 8.dp)
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(start = 8.dp)
                     ) {
                         Text(
                             text = parking.name,
@@ -113,7 +115,7 @@ fun ParkingsList(navController: NavHostController, parkings: List<Parking>) {
                                 modifier = Modifier.size(16.dp)
                             )
                             Text(
-                                text = parking.commune,
+                                text = parking.commune +" , "+parking.adresse,
                                 fontSize = 12.sp,
                                 color = lightGrey,
                                 modifier = Modifier.padding(start = 4.dp)
@@ -125,7 +127,7 @@ fun ParkingsList(navController: NavHostController, parkings: List<Parking>) {
                                 Icon(
                                     imageVector = Icons.Outlined.Star,
                                     contentDescription = "Star Icon",
-                                    tint = orange,
+                                    tint = Color.Yellow,
                                     modifier = Modifier.size(14.dp)
                                 )
                             }
@@ -137,19 +139,17 @@ fun ParkingsList(navController: NavHostController, parkings: List<Parking>) {
                             )
                         }
                         Spacer(modifier = Modifier.height(4.dp))
+
+                    }
+
                         Text(
                             text = parking.tarif.toString()+" DA/H",
                             fontWeight = FontWeight.Bold,
                             fontSize = 16.sp,
                             color = orange
                         )
-                    }
-                    Icon(
-                        imageVector = Icons.Rounded.Menu,
-                        contentDescription = "Bookmark Icon",
-                        tint = Color.Green,
-                        modifier = Modifier.size(24.dp).padding(end = 8.dp)
-                    )
+
+
                 }
             }
         }

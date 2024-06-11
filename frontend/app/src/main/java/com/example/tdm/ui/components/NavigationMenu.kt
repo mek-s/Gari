@@ -26,6 +26,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.tdm.data.viewModels.ParkingModel
 import com.example.tdm.data.viewModels.PlaceModel
+import com.example.tdm.ui.screens.SelectPlaceScreen
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -97,12 +98,14 @@ fun NavigationMenu(
 
             composable(Routes.Reserv.route) {
                 val parkingId = it.arguments?.getString("parkingId")?.toInt()
+                val idPlace = it.arguments?.getString("idPlace")?.toInt()
 
                 // Ensure user is logged in before displaying reservation screen
                 if (isLoggedIn) {
-                    if (parkingId != null) {
+                    if (parkingId != null && idPlace != null) {
                         DisplayReservation(
                             parkingId = parkingId,
+                            placId = idPlace,
                             isLoggedIn = isLoggedIn,
                             username = LocalUsername ?: "",
                             viewModelReserv = reservationModel,
@@ -122,6 +125,12 @@ fun NavigationMenu(
                 val parkingId = it.arguments?.getString("parkingId")?.toInt()
                 DisplayParkingDetails(navController,parkingModel , parkingId)
             }
+            composable(Routes.SelectPlace.route){
+                val parkingId = it.arguments?.getString("parkingId")?.toInt()
+                if (parkingId != null) {
+                    SelectPlaceScreen(parkingId = parkingId, navController = navController, viewModel = placeModel)
+                }
+            }
 
 
             composable(Routes.Login.route) {
@@ -131,7 +140,7 @@ fun NavigationMenu(
             composable(Routes.ReservationDetails.route) {
                 val ResId = it.arguments?.getString("reservationId")?.toInt()
                 if (ResId != null) {
-                    ReservationDetails(ResId, reservationModel, parkingModel)
+                    ReservationDetails(ResId, reservationModel, parkingModel , navController= navController)
                 }
             }
             composable(Routes.MyReserv.route) {
@@ -142,6 +151,7 @@ fun NavigationMenu(
                     isLoggedIn = isLoggedIn,
                     username = username,
                     viewModelReserv = reservationModel,
+                    parkingModel = parkingModel,
                     navHostController = navController
                 )
             }

@@ -43,6 +43,10 @@ fun DisplayHome(navController : NavHostController, parkingModel: ParkingModel) {
         verticalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxSize()
     ) {
+
+
+
+        Spacer(modifier = Modifier.height(10.dp))
         SearchBar(
             query = query,
             onQueryChanged = { newQuery ->
@@ -57,15 +61,6 @@ fun DisplayHome(navController : NavHostController, parkingModel: ParkingModel) {
 
 
         Spacer(modifier = Modifier.height(8.dp))
-
-        FilterBar(
-            selectedCommune = selectedCommune,
-            onCommuneChanged = { newCommune ->
-                selectedCommune = newCommune
-                filteredParkings = filterAndSearchParkings(query, selectedCommune, parkingModel)
-            },
-            parkings = parkingModel.allRParkings.value
-        )
 
         DisplayLoading(loading = parkingModel.loading.value)
         ParkingsList(navController, parkings = filteredParkings ?: listOf())

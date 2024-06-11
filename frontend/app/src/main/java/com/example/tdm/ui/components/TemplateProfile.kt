@@ -11,10 +11,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -32,6 +34,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -40,6 +43,7 @@ import coil.compose.AsyncImage
 import coil.compose.rememberImagePainter
 import com.example.tdm.R
 import com.example.tdm.URL
+import com.example.tdm.ui.theme.darkBlue
 
 @Composable
 fun Header(
@@ -74,15 +78,8 @@ fun Header(
         }
     }
 
+    Spacer(modifier = Modifier.width(10.dp))
     Box(modifier = Modifier.fillMaxWidth()) {
-        Image(
-            painter = painterResource(id = R.drawable.bigg),
-            contentDescription = null,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(190.dp),
-            contentScale = ContentScale.Crop
-        )
 
         Row(
             modifier = Modifier
@@ -113,39 +110,48 @@ fun Header(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
         ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(top = 20.dp)
+            ) {
+
+
             Box(
                 modifier = Modifier
                     .size(80.dp)
                     .clip(RoundedCornerShape(50))
-                    .background(color = Color(0xFF0D5575)),
+                    .background(color = darkBlue),
                 contentAlignment = Alignment.Center
             ) {
                 if (!userPhoto.isNullOrEmpty()) {
                     AsyncImage(
-                        model = "https://7580-41-220-152-83.ngrok-free.app/$userPhoto",
+                        model = URL+userPhoto,
                         contentDescription = "User Photo",
                         modifier = Modifier
-                            .size(80.dp)
+                            .size(20.dp)
                             .clip(RoundedCornerShape(50))
                     )
                 } else {
                     Text(
-                        text = username?.firstOrNull()?.toString() ?: "A",
+                        text = username?.firstOrNull()?.toString() ?: "U",
                         color = Color.White,
                         fontSize = 24.sp
                     )
                 }
-            }
 
-            Text(
-                text = username ?: "",
-                color = Color.Black,
-                fontSize = 16.sp,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .padding(top = 8.dp)
-            )
+            }
+                Text(
+                    text = username ?: "",
+                    color = Color.Black,
+                    fontSize = 18.sp,
+                    textAlign = TextAlign.Center,
+                    fontWeight = FontWeight.SemiBold,
+                    modifier = Modifier
+
+                        .padding(top = 8.dp)
+                )
+
+            }
 
             Row(
                 horizontalArrangement = Arrangement.Center,

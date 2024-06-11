@@ -65,6 +65,7 @@ import com.example.tdm.ui.theme.orange
 fun ParkingDetails(navController: NavHostController, parking: Parking?) {
     val imageLoader = ImageLoader.Builder(LocalContext.current)
         .respectCacheHeaders(false).build()
+
     val imageRequest =  ImageRequest.Builder(LocalContext.current)
         .data(URL + (parking?.image ?: ""))
         .diskCachePolicy(CachePolicy.ENABLED)
@@ -192,7 +193,7 @@ fun ParkingDetails(navController: NavHostController, parking: Parking?) {
 
                 Button(
                     onClick = {
-                        navController.navigate(Routes.Reserv.createRoute(parking.idParking))
+                        navController.navigate(Routes.SelectPlace.createRoute(parking.idParking))
                     },
                     colors = ButtonDefaults.buttonColors(darkBlue),
                     shape = RoundedCornerShape(10.dp),
@@ -206,13 +207,5 @@ fun ParkingDetails(navController: NavHostController, parking: Parking?) {
     else {
 
 
-        Button(
-            onClick = {
-
-            },
-
-            ) {
-            Text(text = "aaaaaaaaaa")
-        }
     }
 }

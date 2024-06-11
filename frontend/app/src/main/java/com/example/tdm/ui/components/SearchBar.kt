@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -35,6 +36,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.sp
+import com.example.tdm.ui.theme.darkBlue
+import com.example.tdm.ui.theme.lightBlue
 
 @Composable
 fun SearchBar(
@@ -43,22 +46,25 @@ fun SearchBar(
     onSearch: () -> Unit
 ) {
     Box(
+
         modifier = Modifier
+
             .fillMaxWidth()
             .padding(horizontal = 20.dp)
-            .clip(RoundedCornerShape(6.dp))
-            .background(Color.White)
+            .clip(RoundedCornerShape(20.dp))
+            .background(lightBlue)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 8.dp, vertical = 8.dp)
+                .padding(20.dp)
         ) {
             Icon(
                 imageVector = Icons.Default.Search,
                 contentDescription = "Search Icon",
-                tint = Color.Gray
+                modifier = Modifier.size(25.dp),
+                tint = darkBlue
             )
             Spacer(modifier = Modifier.width(8.dp))
             BasicTextField(
@@ -66,7 +72,7 @@ fun SearchBar(
                 onValueChange = onQueryChanged,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Color.White),
+                    .background(lightBlue),
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Search),
                 keyboardActions = KeyboardActions(onSearch = {
                     // Handle the search action here

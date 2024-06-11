@@ -2,7 +2,6 @@ package com.example.tdm.data.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-
 @Entity(tableName = "parking")
 data class Parking(
     @PrimaryKey
@@ -16,4 +15,5 @@ data class Parking(
     val image : String,
     val tarif: Double
 )
+
 

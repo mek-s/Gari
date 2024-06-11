@@ -1,8 +1,6 @@
 
-
-
-
 sealed class Routes (val route: String) {
+
     object Home: Routes("HomeScreen")
 
     object Map : Routes ("MapScreen")
@@ -21,14 +19,18 @@ sealed class Routes (val route: String) {
 
 
     //to create a new reservation
-    object Reserv: Routes ("ReservationScreen/{parkingId}")
+    object Reserv: Routes ("ReservationScreen/{parkingId}/{idPlace}")
     {
-        fun createRoute (parkingId: Int?) = "ReservationScreen/$parkingId"
+        fun createRoute (parkingId: Int, idPlace: Int) = "ReservationScreen/$parkingId/$idPlace"
     }
 
 
     object ParkingDetails : Routes("ParkingDetails/{parkingId}") {
         fun createRoute(parkingId: Int?) = "ParkingDetails/$parkingId"
+    }
+
+    object SelectPlace : Routes("SelectPlace/{parkingId}"){
+        fun createRoute(parkingId: Int?) = "SelectPlace/$parkingId"
     }
 
     object MyReserv : Routes("MyReserv/{username}") {

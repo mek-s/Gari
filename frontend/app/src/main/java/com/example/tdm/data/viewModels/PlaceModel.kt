@@ -40,6 +40,23 @@ class PlaceModel(private val placeRespository: PlaceRespository) : ViewModel() {
             }
         }
     }
+    fun getAvailablePlaces(parkingId: Int, callback: (List<Place>?) -> Unit) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                loading.value = true
+                val response = placeRespository.getAvailablePlaces(parkingId)
+                loading.value = false
+
+                if (response.isSuccessful) {
+                    val places = response.body()
+                    callback(places)
+                } else {
+                    displayMsg.value = true
+                    callback(null)
+                }
+            }
+        }
+    }
 
 
 

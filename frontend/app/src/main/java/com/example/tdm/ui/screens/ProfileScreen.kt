@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.example.tdm.R
+import com.example.tdm.ui.theme.orange
 
 
 @Composable
@@ -114,9 +115,9 @@ fun DisplayMyProfile(navController: NavController, sharedPreferencesManager: Sha
 
                 Box(
                     modifier = Modifier
-                        .clip(RoundedCornerShape(8.dp))
+                        .clip(RoundedCornerShape(10.dp))
                         .fillMaxWidth()
-                        .shadow(2.dp)
+                        .shadow(1.dp)
                 ) {
                     Column(
                         modifier = Modifier
@@ -145,9 +146,9 @@ fun DisplayMyProfile(navController: NavController, sharedPreferencesManager: Sha
                 // Second Box: Contains toggle for notifications and theme
                 Box(
                     modifier = Modifier
-                        .clip(RoundedCornerShape(8.dp))
+                        .clip(RoundedCornerShape(10.dp))
                         .fillMaxWidth()
-                        .shadow(2.dp)
+                        .shadow(1.dp)
                 ) {
                     Column(
                         modifier = Modifier
@@ -168,7 +169,7 @@ fun DisplayMyProfile(navController: NavController, sharedPreferencesManager: Sha
                         .clip(RoundedCornerShape(8.dp))
                         .fillMaxWidth()
                         .shadow(2.dp)
-                        .background(Color(0xFF00C8CB))
+                        .background(orange)
                 ) {
                     MenuButton2("Log Out", Icons.Filled.ExitToApp) {
                         viewModel.setNavValue(0)
