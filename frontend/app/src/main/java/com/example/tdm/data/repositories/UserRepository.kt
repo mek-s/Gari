@@ -25,6 +25,10 @@ class UserRepository(private val endpoint: Endpoint) {
         return endpoint.createUser(user)
     }
 
+    suspend fun getUserByEmail(email: String): Response<User> {
+        return endpoint.getUserByEmail(email)
+    }
+
     suspend fun updateUserInformation(user: User): Response<String> {
         return endpoint.updateUserInformation(user)
     }

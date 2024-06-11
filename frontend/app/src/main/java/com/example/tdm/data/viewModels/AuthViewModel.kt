@@ -67,12 +67,47 @@ class AuthViewModel(
         FirebaseAuth.getInstance().signInWithCredential(credential)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    val user = task.result?.user
-                    if (user != null) {
-                        this.user.value = user.displayName
-                        sharedPreferencesManager.setLocalUsername(user.displayName ?: "")
-                        sharedPreferencesManager.setLoggedIn(true)
-                        callback(true)
+                    val firebaseUser = task.result?.user
+                    if (firebaseUser != null) {
+                        viewModelScope.launch {
+                            try {
+                                val response = userRepository.getUserByEmail(firebaseUser.email!!)
+                                if (response.isSuccessful && response.body() != null) {
+                                    // User exists, update shared preferences and state
+                                    val user = response.body()!!
+                                    _userr.value = user
+                                    sharedPreferencesManager.setLocalUsername(user.username)
+                                    sharedPreferencesManager.setLoggedIn(true)
+                                    callback(true)
+                                } else {
+                                    // User does not exist, create a new user
+                                    val displayName = firebaseUser.displayName ?: ""
+                                    val nameParts = displayName.split(" ")
+
+                                    val prenom = if (nameParts.isNotEmpty()) nameParts[0] else ""
+                                    val nom = if (nameParts.size > 1) nameParts[1] else ""
+
+                                    val newUser = User(
+                                        username = displayName,
+                                        password = "", // Or generate a random password
+                                        nom = nom,
+                                        prenom = prenom,
+                                        email = firebaseUser.email ?: "",
+                                        photo = firebaseUser.photoUrl.toString()
+                                    )
+                                    val createResponse = userRepository.createUser(newUser)
+                                    if (createResponse.isSuccessful) {
+                                        sharedPreferencesManager.setLocalUsername(newUser.username)
+                                        sharedPreferencesManager.setLoggedIn(true)
+                                        callback(true)
+                                    } else {
+                                        callback(false)
+                                    }
+                                }
+                            } catch (e: Exception) {
+                                callback(false)
+                            }
+                        }
                     } else {
                         callback(false)
                     }

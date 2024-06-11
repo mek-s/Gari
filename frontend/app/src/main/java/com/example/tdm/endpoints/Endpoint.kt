@@ -34,7 +34,10 @@ interface Endpoint {
 
     @POST("user/register")
     suspend fun createUser(@Body user: User): Response<String>
-    @PUT("user//update-info/{username}")
+
+    @GET("user/getUserByEmail/{email}")
+    suspend fun getUserByEmail(@Path("email") email: String): Response<User>
+    @PUT("user/update-info/{username}")
     suspend fun updateUserInformation(@Body user: User): Response<String>
 
     @GET("user/{username}")
@@ -71,6 +74,9 @@ interface Endpoint {
 
     @GET("reservation/{id}")
     suspend fun getReservationById(@Path("id") id: Int): Response<Reservation>
+
+
+
 
 
     companion object {
