@@ -46,13 +46,12 @@ fun SearchBar(
     onSearch: () -> Unit
 ) {
     Box(
-
         modifier = Modifier
 
             .fillMaxWidth()
             .padding(horizontal = 20.dp)
             .clip(RoundedCornerShape(20.dp))
-            .background(lightBlue)
+            .background(Color.White)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -72,7 +71,7 @@ fun SearchBar(
                 onValueChange = onQueryChanged,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(lightBlue),
+                    .background(Color.White),
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Search),
                 keyboardActions = KeyboardActions(onSearch = {
                     // Handle the search action here

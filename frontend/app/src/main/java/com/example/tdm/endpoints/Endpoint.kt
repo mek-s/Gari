@@ -4,6 +4,7 @@ import com.example.tdm.data.models.Place
 import com.example.tdm.data.models.Reservation
 import com.example.tdm.data.models.User
 import com.google.gson.GsonBuilder
+import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -51,6 +52,10 @@ interface Endpoint {
         @Query("username") username: String,
         @Query("photoName") photoName: String
     ): Response<String>
+
+    @Multipart
+    @POST("images/upload")
+    suspend fun uploadImage(@Part image: MultipartBody.Part): Response<String>
 
     @PUT("user/update-password/{username}")
     suspend fun updateUserPassword(@Query("username") username: String, @Query("newPassword") newPassword: String): Response<String>

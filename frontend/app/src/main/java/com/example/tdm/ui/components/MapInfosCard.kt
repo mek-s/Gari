@@ -113,12 +113,8 @@ fun ParkingInfoCard(
                     color = MaterialTheme.colorScheme.primary
                 )
             }
-            Spacer(modifier = Modifier.width(8.dp))
-            Button(onClick = {
-                navController.navigate(Routes.ParkingDetails.createRoute(parkingId))
-            }) {
-                Text(text = "See Details")
-            }
+
+
         }
     }
 }

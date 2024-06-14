@@ -4,8 +4,10 @@ import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,7 +20,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -44,6 +50,8 @@ import coil.compose.rememberImagePainter
 import com.example.tdm.R
 import com.example.tdm.URL
 import com.example.tdm.ui.theme.darkBlue
+import com.example.tdm.ui.theme.white
+import okhttp3.internal.wait
 
 @Composable
 fun Header(
@@ -64,8 +72,15 @@ fun Header(
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
         bitmap?.let {
             val filePath = authViewModel.saveUserPhotoToStorage(it, context)
-            authViewModel.updateUserPhoto(username!!, filePath)
-            userPhoto = filePath
+            authViewModel.uploadUserPhoto(filePath,
+                onSuccess = { imageName ->
+                    username?.let { it1 -> authViewModel.updateUserPhoto(it1, imageName) }
+                    userPhoto = filePath
+                },
+                onError = { exception ->
+                    exception.printStackTrace()
+                }
+            )
         }
     }
 
@@ -73,11 +88,17 @@ fun Header(
         uri?.let {
             val bitmap = MediaStore.Images.Media.getBitmap(context.contentResolver, it)
             val filePath = authViewModel.saveUserPhotoToStorage(bitmap, context)
-            authViewModel.updateUserPhoto(username!!, filePath)
-            userPhoto = filePath
+            authViewModel.uploadUserPhoto(filePath,
+                onSuccess = { imageName ->
+                    username?.let { it1 -> authViewModel.updateUserPhoto(it1, imageName) }
+                    userPhoto = filePath
+                },
+                onError = { exception ->
+                    exception.printStackTrace()
+                }
+            )
         }
     }
-
     Spacer(modifier = Modifier.width(10.dp))
     Box(modifier = Modifier.fillMaxWidth()) {
 
@@ -120,7 +141,7 @@ fun Header(
                 modifier = Modifier
                     .size(80.dp)
                     .clip(RoundedCornerShape(50))
-                    .background(color = darkBlue),
+                    .background(color = Color.White),
                 contentAlignment = Alignment.Center
             ) {
                 if (!userPhoto.isNullOrEmpty()) {
@@ -128,13 +149,14 @@ fun Header(
                         model = URL+userPhoto,
                         contentDescription = "User Photo",
                         modifier = Modifier
-                            .size(20.dp)
+
+                            .size(40.dp)
                             .clip(RoundedCornerShape(50))
                     )
                 } else {
                     Text(
                         text = username?.firstOrNull()?.toString() ?: "U",
-                        color = Color.White,
+                        color = darkBlue,
                         fontSize = 24.sp
                     )
                 }
@@ -147,18 +169,23 @@ fun Header(
                     textAlign = TextAlign.Center,
                     fontWeight = FontWeight.SemiBold,
                     modifier = Modifier
-
-                        .padding(top = 8.dp)
+                        .padding(top = 8.dp , start=8.dp)
                 )
 
             }
 
             Row(
-                horizontalArrangement = Arrangement.Center,
+                horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.padding(top = 8.dp)
             ) {
                 Button(onClick = { launcher.launch() }) {
-                    Text("Take Picture")
+                    Icon(
+                        imageVector = Icons.Outlined.Add,
+                        contentDescription = "Location Icon",
+                        tint = Color.White,
+                        modifier = Modifier.size(20.dp)
+                    )
+
                 }
 
                 Button(onClick = { galleryLauncher.launch("image/*") }) {

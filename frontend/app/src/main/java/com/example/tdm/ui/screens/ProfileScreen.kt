@@ -42,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import com.example.tdm.MainActivity
 import com.example.tdm.R
 import com.example.tdm.ui.theme.orange
 
@@ -172,8 +173,10 @@ fun DisplayMyProfile(navController: NavController, sharedPreferencesManager: Sha
                         .background(orange)
                 ) {
                     MenuButton2("Log Out", Icons.Filled.ExitToApp) {
+                        (context as MainActivity).signOut()
                         viewModel.setNavValue(0)
                         sharedPreferencesManager.setLoggedIn(false)
+                        viewModel.user.value = null
                         navController.navigate(Routes.Home.route)
                     }
                 }

@@ -30,6 +30,7 @@ import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -206,6 +207,11 @@ fun ParkingDetails(navController: NavHostController, parking: Parking?) {
     }
     else {
 
-
+//      Column (
+//          verticalArrangement = Arrangement.Center,
+//          horizontalAlignment = Alignment.CenterHorizontally
+//      ){
+//          CircularProgressIndicator()
+//      }
     }
 }

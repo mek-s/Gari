@@ -89,6 +89,11 @@ class MainActivity : androidx.activity.ComponentActivity() {
         }
     }
 
+    fun signOut(){
+        val googleSignInClient = GoogleSignIn.getClient(this, GoogleSignInOptions.DEFAULT_SIGN_IN)
+        googleSignInClient.signOut()
+    }
+
     fun signIn() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))

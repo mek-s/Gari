@@ -1,6 +1,7 @@
 
 import com.example.tdm.data.models.User
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Response
 
@@ -33,6 +34,9 @@ class UserRepository(private val endpoint: Endpoint) {
         return endpoint.updateUserInformation(user)
     }
 
+    suspend fun uploadImage(image: MultipartBody.Part): Response<String> {
+        return endpoint.uploadImage(image)
+    }
 
     suspend fun updateUserPassword(username: String, newPassword: String): Response<String> {
         return endpoint.updateUserPassword(username, newPassword)

@@ -16,6 +16,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 import java.io.FileOutputStream
 
@@ -27,6 +30,7 @@ class AuthViewModel(
     private val _currentUsername = MutableStateFlow("")
     val currentUsername = _currentUsername.asStateFlow()
     var user = mutableStateOf<String?>(null)
+    var sso = mutableStateOf<Int?>(0)
 
     var nav by mutableStateOf<Int?>(0)
         private set
@@ -73,6 +77,7 @@ class AuthViewModel(
                             try {
                                 val response = userRepository.getUserByEmail(firebaseUser.email!!)
                                 if (response.isSuccessful && response.body() != null) {
+                                    sso.value = 1
                                     // User exists, update shared preferences and state
                                     val user = response.body()!!
                                     _userr.value = user
@@ -80,6 +85,7 @@ class AuthViewModel(
                                     sharedPreferencesManager.setLoggedIn(true)
                                     callback(true)
                                 } else {
+                                    sso.value = 1
                                     // User does not exist, create a new user
                                     val displayName = firebaseUser.displayName ?: ""
                                     val nameParts = displayName.split(" ")
@@ -192,13 +198,32 @@ class AuthViewModel(
         return fileName
     }
 
+    fun uploadUserPhoto(filePath: String, onSuccess: (String) -> Unit, onError: (Exception) -> Unit) {
+        viewModelScope.launch {
+            try {
+                val file = File(filePath)
+                val requestFile = file.asRequestBody("image/png".toMediaTypeOrNull())
+                val body = MultipartBody.Part.createFormData("image", file.name, requestFile)
 
+                val response = userRepository.uploadImage(body)
+                if (response.isSuccessful) {
+                    response.body()?.let { imageName ->
+                        onSuccess(imageName)
+                    } ?: onError(Exception("Image upload failed"))
+                } else {
+                    onError(Exception("Image upload failed: ${response.errorBody()?.string()}"))
+                }
+            } catch (e: Exception) {
+                onError(e)
+            }
+        }
+    }
     fun updateUserPhoto(username: String, photoName: String) {
         viewModelScope.launch {
             try {
                 val response = userRepository.updateUserPhoto(username, photoName)
                 if (response.isSuccessful) {
-                    // Photo updated successfully
+
                 } else {
                     // Handle unsuccessful response
                 }

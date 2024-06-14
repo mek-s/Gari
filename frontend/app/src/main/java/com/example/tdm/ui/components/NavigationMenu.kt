@@ -90,7 +90,9 @@ fun NavigationMenu(
     ) {
         NavHost(navController = navController, startDestination = Routes.Home.route, modifier = Modifier.padding(it)) {
             composable(Routes.Home.route) {  DisplayHome(navController ,parkingModel) }
-            composable(Routes.Map.route) {  }
+            composable(Routes.Map.route) {
+                DisplayMap(navController = navController, parkingModel = parkingModel)
+            }
 
             composable(Routes.Profile.route) {
               DisplayMyProfile(navController = navController, sharedPreferencesManager = sh, viewModel = authViewModel)

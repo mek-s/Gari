@@ -35,6 +35,7 @@ import com.example.tdm.R
 
 @Composable
 fun DisplayLogin(viewModel: AuthViewModel, navHostController: NavHostController) {
+
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var errorMessage by remember { mutableStateOf("") }
@@ -43,7 +44,7 @@ fun DisplayLogin(viewModel: AuthViewModel, navHostController: NavHostController)
     val context = LocalContext.current
 
     currentUsername = viewModel.user.value
-    if (!currentUsername.isNullOrEmpty()) {
+    if (!currentUsername.isNullOrEmpty() || viewModel.sso.value==1) {
         LaunchedEffect(Unit) {
             navHostController.navigate(Routes.Home.route)
         }
@@ -79,35 +80,9 @@ fun DisplayLogin(viewModel: AuthViewModel, navHostController: NavHostController)
             )
             Spacer(modifier = Modifier.height(16.dp))
 
-
-
-            Button(
-                onClick = {
-                   (context as MainActivity).triggerSignIn()
-                },
-                colors = ButtonDefaults.buttonColors(Color(0xFFFFFFFF)),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp)
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.google),
-                        contentDescription = "Google",
-                        modifier = Modifier.size(24.dp)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text("Login with Google", color = Color.Black)
-                }
-            }
-
             Button(
                 onClick = {
                     viewModel.login(username, password)
-
-
                 },
                 enabled = username.isNotBlank() && password.isNotBlank()
             ) {
@@ -127,10 +102,30 @@ fun DisplayLogin(viewModel: AuthViewModel, navHostController: NavHostController)
                 color = Color.Red,
                 modifier = Modifier.padding(vertical = 8.dp)
             )
-            Text(
-                text = "Forgot your Password ? ",
-                modifier = Modifier.clickable { /* Handle click */ }
-            )
+            Button(
+                onClick = {
+                    (context as MainActivity).triggerSignIn()
+
+                },
+                colors = ButtonDefaults.buttonColors(Color(0xFFFFFFFF)),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp)
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.google),
+                        contentDescription = "Google",
+                        modifier = Modifier.size(24.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("Login with Google", color = Color.Black)
+                }
+            }
+
+
         }
     }
 }
