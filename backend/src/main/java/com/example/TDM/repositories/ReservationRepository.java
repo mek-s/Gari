@@ -14,5 +14,6 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
     Optional<Reservation> findById(Integer id);
     Optional<Reservation> findByCodeQr(String qrCode);
     List<Reservation> findByIdParking(Integer idParking);
+    List<Reservation> findByHeureEntree(String heureEntree);
 }
 

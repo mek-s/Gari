@@ -46,4 +46,8 @@ public class ReservationService {
     public List<Reservation> getReservationsByParkingId(Integer id_parking) {
         return reservationRepository.findByIdParking(id_parking);
     }
+
+    public List<Reservation> getReservationsByHeureEntree(String heureEntree) {
+        return reservationRepository.findByHeureEntree( heureEntree);
+    }
 }

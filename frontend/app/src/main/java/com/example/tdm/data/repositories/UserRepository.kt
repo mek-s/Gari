@@ -49,4 +49,10 @@ class UserRepository(private val endpoint: Endpoint) {
     suspend fun updateUserPhoto(username: String, photoName: String): Response<String> {
         return endpoint.updateUserPhoto(username, photoName)
     }
+
+    suspend fun sendTokenToServer(username: String, token: String): Response<Unit> {
+        return endpoint.sendTokenToServer(TokenRequest(username, token))
+    }
+
+
 }

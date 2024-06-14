@@ -90,7 +90,15 @@ public class UserController {
         }
     }
 
+    @PostMapping("/sendToken")
+    public ResponseEntity<String> sendTokenToServer(@RequestParam("username") String username, @RequestParam("token") String token) {
+        try {
+            userService.sendTokenToServer(username, token);
+            return ResponseEntity.ok("Token sent successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to send token: " + e.getMessage());
+        }
 
 
-
+    }
 }

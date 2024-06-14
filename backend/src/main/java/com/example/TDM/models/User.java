@@ -20,24 +20,27 @@ public class User {
     @Column(name = "nom")
     private String nom;
 
-
     @Column(name = "prenom")
     private String prenom;
 
     @Column(name = "photo")
     private String photo;
 
+    @Column(name = "token") // Add token column
+    private String token;
+
     // Default constructor
     public User() {
     }
 
     // Parameterized constructor
-    public User(String username, String password, String nom, String prenom, String photo) {
+    public User(String username, String password, String nom, String prenom, String photo, String token) {
         this.username = username;
         this.password = password;
         this.nom = nom;
         this.prenom = prenom;
         this.photo = photo;
+        this.token = token; // Initialize token in constructor
     }
 
     public String getEmail() {
@@ -49,6 +52,7 @@ public class User {
     }
 
     // Getters and setters
+    // Getters and setters for username, password, nom, prenom, photo, and token
     public String getUsername() {
         return username;
     }
@@ -87,5 +91,13 @@ public class User {
 
     public void setPhoto(String photo) {
         this.photo = photo;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }
